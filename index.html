@@ -830,9 +830,9 @@
 
         <option
           value="三段深層淨膚課程"
-          data-price="2000"
+          data-price="2500"
         >
-          三段深層淨膚課程｜$2,000
+          三段深層淨膚課程｜$2,500
         </option>
 
       </select>
@@ -1383,8 +1383,7 @@
             'time-button';
 
 
-          button.innerText =
-            time;
+          button.innerText = formatTime(time);
 
 
           button.addEventListener(
@@ -1447,7 +1446,27 @@
 
   }
 
+function formatTime(value) {
 
+  if (!value) {
+    return '';
+  }
+
+  const text = String(value).trim();
+
+  // 已經是 18:00
+  const match = text.match(/(\d{1,2}):(\d{2})/);
+
+  if (match) {
+    return (
+      String(Number(match[1])).padStart(2, '0') +
+      ':' +
+      match[2]
+    );
+  }
+
+  return text;
+}
   /* ==================================================
      建立預約
   ================================================== */
