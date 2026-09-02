@@ -1628,50 +1628,46 @@ function formatTime(value) {
         result.success
       ) {
 
-        message.innerHTML =
-
+      message.innerHTML =
+      
           '<div class="success">' +
-
+      
             '<div class="success-title">' +
               '🎉 預約成功！' +
             '</div>' +
-
+      
             '<div class="reservation-id">' +
-
-              escapeHtml(
-                result.reservationId
-              ) +
-
+              escapeHtml(result.reservationId || '') +
             '</div>' +
-
+      
             '<div class="success-info">' +
-
+      
               successRow(
                 '日期',
-                result.date
+                result.date || ''
               ) +
-
+      
               successRow(
                 '時間',
-                result.time
+                formatTime(result.time)
               ) +
-
+      
               successRow(
                 '服務',
-                result.service
+                result.service || ''
               ) +
-
+      
               successRow(
                 '價格',
-                '$' + result.price
+                '$' + (result.price || '')
               ) +
-
+      
             '</div>' +
-
+      
             '<div class="success-notice">' +
               '預約確認通知已傳送至您的 LINE。' +
             '</div>' +
-
+      
           '</div>';
 
 
@@ -1766,34 +1762,49 @@ function formatTime(value) {
      成功資料列
   ================================================== */
 
-  function successRow(
-    label,
-    value
-  ) {
-
-    return
-
+  function successRow(label, value) {
+  
+    return (
       '<div class="success-row">' +
-
+  
         '<div class="success-label">' +
-
-          escapeHtml(
-            label
-          ) +
-
+          escapeHtml(label) +
         '</div>' +
-
+  
         '<div class="success-value">' +
-
-          escapeHtml(
-            value
-          ) +
-
+          escapeHtml(value) +
         '</div>' +
-
-      '</div>';
-
+  
+      '</div>'
+    );
+  
   }
+  
+  
+  function formatTime(value) {
+  
+    if (!value) {
+      return '';
+    }
+  
+    const text = String(value).trim();
+  
+    const match =
+      text.match(/(\d{1,2}):(\d{2})/);
+  
+    if (match) {
+  
+      return (
+        String(Number(match[1])).padStart(2, '0') +
+        ':' +
+        match[2]
+      );
+  
+    }
+  
+    return text;
+  }
+
 
 
   /* ==================================================
