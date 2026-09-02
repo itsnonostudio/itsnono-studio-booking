@@ -20,22 +20,16 @@
 
   <style>
 
-    /* ==================================================
-       RESET
-    ================================================== */
-
     *,
     *::before,
     *::after {
       box-sizing: border-box;
     }
 
-
     html {
       min-height: 100%;
       scroll-behavior: smooth;
     }
-
 
     body {
       margin: 0;
@@ -61,9 +55,9 @@
     }
 
 
-    /* ==================================================
+    /* =========================
        HEADER
-    ================================================== */
+    ========================= */
 
     .header {
       width: 100%;
@@ -86,7 +80,6 @@
       overflow: hidden;
     }
 
-
     .header::before {
       content: "";
 
@@ -103,7 +96,6 @@
       background:
         rgba(255, 255, 255, 0.08);
     }
-
 
     .header::after {
       content: "";
@@ -122,7 +114,6 @@
         rgba(255, 255, 255, 0.06);
     }
 
-
     .header-inner {
       position: relative;
       z-index: 2;
@@ -133,7 +124,6 @@
       margin: 0 auto;
     }
 
-
     .header-small {
       color: #FFF0CE;
 
@@ -142,7 +132,6 @@
 
       letter-spacing: 1.5px;
     }
-
 
     .header-title {
       margin-top: 7px;
@@ -157,7 +146,6 @@
       letter-spacing: 1px;
     }
 
-
     .header-sub {
       margin-top: 7px;
 
@@ -169,9 +157,9 @@
     }
 
 
-    /* ==================================================
+    /* =========================
        CONTAINER
-    ================================================== */
+    ========================= */
 
     .container {
       width: 100%;
@@ -185,9 +173,9 @@
     }
 
 
-    /* ==================================================
-       BOOKING CARD
-    ================================================== */
+    /* =========================
+       CARD
+    ========================= */
 
     .booking-card {
       background: #FFFFFF;
@@ -222,7 +210,6 @@
       margin-bottom: 4px;
     }
 
-
     .section-title::before {
       content: "";
 
@@ -233,7 +220,6 @@
 
       background: #F18782;
     }
-
 
     .section-description {
       margin:
@@ -247,19 +233,17 @@
     }
 
 
-    /* ==================================================
+    /* =========================
        FORM
-    ================================================== */
+    ========================= */
 
     .form-group {
       margin-top: 20px;
     }
 
-
     .form-group:first-of-type {
       margin-top: 0;
     }
-
 
     label {
       display: block;
@@ -272,7 +256,6 @@
 
       font-weight: 600;
     }
-
 
     select,
     input {
@@ -299,13 +282,7 @@
       color: #4C514D;
 
       outline: none;
-
-      transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
     }
-
 
     select:focus,
     input:focus {
@@ -318,15 +295,14 @@
         rgba(111, 169, 145, 0.15);
     }
 
-
     input::placeholder {
       color: #B7BAB5;
     }
 
 
-    /* ==================================================
+    /* =========================
        SELECT
-    ================================================== */
+    ========================= */
 
     select {
       appearance: none;
@@ -361,9 +337,9 @@
     }
 
 
-    /* ==================================================
+    /* =========================
        DATE
-    ================================================== */
+    ========================= */
 
     .date-input {
       appearance: auto;
@@ -373,14 +349,13 @@
     }
 
 
-    /* ==================================================
+    /* =========================
        TIME
-    ================================================== */
+    ========================= */
 
     .time-wrapper {
       margin-top: 20px;
     }
-
 
     .times {
       display: grid;
@@ -390,7 +365,6 @@
 
       gap: 9px;
     }
-
 
     .time-button {
       width: 100%;
@@ -416,28 +390,7 @@
       font-weight: 600;
 
       cursor: pointer;
-
-      transition:
-        all .18s ease;
-
-      -webkit-tap-highlight-color:
-        transparent;
     }
-
-
-    .time-button:hover {
-      background: #F2FAF5;
-
-      transform:
-        translateY(-1px);
-    }
-
-
-    .time-button:active {
-      transform:
-        scale(.97);
-    }
-
 
     .time-button.selected {
       background: #6FA991;
@@ -450,7 +403,6 @@
         0 4px 10px
         rgba(111, 169, 145, 0.25);
     }
-
 
     .no-time {
       grid-column: 1 / -1;
@@ -472,68 +424,9 @@
     }
 
 
-    /* ==================================================
-       LOADING
-    ================================================== */
-
-    .loading {
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 7px;
-    }
-
-
-    .loading-dot {
-      width: 6px;
-      height: 6px;
-
-      border-radius: 50%;
-
-      background: #6FA991;
-
-      animation:
-        loading 1s infinite ease-in-out;
-    }
-
-
-    .loading-dot:nth-child(2) {
-      animation-delay: .15s;
-    }
-
-
-    .loading-dot:nth-child(3) {
-      animation-delay: .3s;
-    }
-
-
-    @keyframes loading {
-
-      0%,
-      60%,
-      100% {
-        opacity: .3;
-
-        transform:
-          translateY(0);
-      }
-
-      30% {
-        opacity: 1;
-
-        transform:
-          translateY(-3px);
-      }
-
-    }
-
-
-    /* ==================================================
+    /* =========================
        SUBMIT
-    ================================================== */
+    ========================= */
 
     .submit {
       display: block;
@@ -573,44 +466,20 @@
       box-shadow:
         0 6px 15px
         rgba(241, 135, 130, 0.22);
-
-      transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        opacity .2s ease;
     }
-
-
-    .submit:hover {
-      transform:
-        translateY(-1px);
-
-      box-shadow:
-        0 8px 18px
-        rgba(241, 135, 130, 0.28);
-    }
-
-
-    .submit:active {
-      transform:
-        scale(.985);
-    }
-
 
     .submit:disabled {
       opacity: .55;
 
       cursor: not-allowed;
 
-      transform: none;
-
       box-shadow: none;
     }
 
 
-    /* ==================================================
+    /* =========================
        MESSAGE
-    ================================================== */
+    ========================= */
 
     .message {
       margin-top: 18px;
@@ -622,10 +491,6 @@
       font-size: 14px;
     }
 
-
-    /* ==================================================
-       SUCCESS / ERROR
-    ================================================== */
 
     .success {
       padding:
@@ -643,10 +508,7 @@
       box-shadow:
         0 4px 14px
         rgba(76, 81, 77, 0.05);
-
-      text-align: left;
     }
-
 
     .success-title {
       color: #3F6257;
@@ -659,7 +521,6 @@
 
       margin-bottom: 12px;
     }
-
 
     .reservation-id {
       display: block;
@@ -678,7 +539,6 @@
         5px 0 18px;
     }
 
-
     .success-info {
       padding: 14px;
 
@@ -689,7 +549,6 @@
       border:
         1px solid #F0E5D4;
     }
-
 
     .success-row {
       padding: 8px 0;
@@ -702,11 +561,9 @@
       line-height: 1.6;
     }
 
-
     .success-row:last-child {
       border-bottom: none;
     }
-
 
     .success-label {
       color: #8A8D87;
@@ -716,13 +573,11 @@
       margin-bottom: 2px;
     }
 
-
     .success-value {
       color: #4C514D;
 
       font-weight: 600;
     }
-
 
     .success-notice {
       margin-top: 15px;
@@ -743,9 +598,9 @@
     }
 
 
-    /* ==================================================
+    /* =========================
        LINE STATUS
-    ================================================== */
+    ========================= */
 
     .line-status {
       margin-top: 13px;
@@ -762,20 +617,65 @@
       line-height: 1.6;
     }
 
-
-    .line-status.success-status {
+    .success-status {
       color: #3F6257;
     }
 
-
-    .line-status.error-status {
+    .error-status {
       color: #D66F69;
     }
 
 
-    /* ==================================================
-       TABLET
-    ================================================== */
+    /* =========================
+       LOADING
+    ========================= */
+
+    .loading {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+    }
+
+    .loading-dot {
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: #6FA991;
+
+      animation:
+        loading 1s infinite ease-in-out;
+    }
+
+    .loading-dot:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .loading-dot:nth-child(3) {
+      animation-delay: .3s;
+    }
+
+    @keyframes loading {
+
+      0%,
+      60%,
+      100% {
+        opacity: .3;
+        transform: translateY(0);
+      }
+
+      30% {
+        opacity: 1;
+        transform: translateY(-3px);
+      }
+
+    }
+
 
     @media (min-width: 600px) {
 
@@ -784,18 +684,15 @@
           36px 32px;
       }
 
-
       .container {
         padding:
           34px 24px 50px;
       }
 
-
       .booking-card {
         padding:
           30px;
       }
-
 
       .times {
         grid-template-columns:
@@ -804,17 +701,8 @@
         gap: 10px;
       }
 
-
-      .time-button {
-        min-height: 50px;
-      }
-
     }
 
-
-    /* ==================================================
-       DESKTOP
-    ================================================== */
 
     @media (min-width: 900px) {
 
@@ -823,34 +711,21 @@
           38px 30px;
       }
 
-
       .container {
         padding:
           45px 30px 70px;
       }
-
 
       .booking-card {
         padding:
           34px;
 
         border-radius: 20px;
-
-        box-shadow:
-          0 15px 45px
-          rgba(63, 98, 87, 0.10);
       }
-
 
       .section-title {
         font-size: 22px;
       }
-
-
-      .section-description {
-        font-size: 14px;
-      }
-
 
       .times {
         grid-template-columns:
@@ -858,12 +733,6 @@
 
         gap: 11px;
       }
-
-
-      .time-button {
-        min-height: 52px;
-      }
-
 
       .submit {
         min-height: 56px;
@@ -874,10 +743,6 @@
     }
 
 
-    /* ==================================================
-       SMALL PHONE
-    ================================================== */
-
     @media (max-width: 359px) {
 
       .header {
@@ -885,12 +750,10 @@
         padding-right: 18px;
       }
 
-
       .container {
         padding:
           18px 12px 35px;
       }
-
 
       .booking-card {
         padding:
@@ -899,43 +762,18 @@
         border-radius: 15px;
       }
 
-
       .section-title {
         font-size: 18px;
       }
-
 
       .times {
         gap: 7px;
       }
 
-
       .time-button {
         min-height: 45px;
 
         font-size: 14px;
-      }
-
-    }
-
-
-    /* ==================================================
-       REDUCE MOTION
-    ================================================== */
-
-    @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before,
-      *::after {
-        animation-duration:
-          .01ms !important;
-
-        animation-iteration-count:
-          1 !important;
-
-        transition-duration:
-          .01ms !important;
       }
 
     }
@@ -948,356 +786,326 @@
 <body>
 
 
-  <!-- ==================================================
-       HEADER
-  ================================================== -->
+<header class="header">
 
-  <header class="header">
+  <div class="header-inner">
 
-    <div class="header-inner">
+    <div class="header-small">
+      ITSNONO_STUDIO
+    </div>
 
-      <div class="header-small">
-        ITSNONO_STUDIO
-      </div>
+    <div class="header-title">
+      線上預約
+    </div>
 
-      <div class="header-title">
-        線上預約
-      </div>
+    <div class="header-sub">
+      ONLINE RESERVATION
+    </div>
 
-      <div class="header-sub">
-        ONLINE RESERVATION
-      </div>
+  </div>
+
+</header>
+
+
+<main class="container">
+
+  <section class="booking-card">
+
+    <div class="section-title">
+      預約服務
+    </div>
+
+    <div class="section-description">
+      請選擇服務、日期與方便的時間，我們會為您保留預約。
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="service">
+        選擇服務
+      </label>
+
+      <select id="service">
+
+        <option
+          value="三段深層淨膚課程"
+          data-price="2000"
+        >
+          三段深層淨膚課程｜$2,000
+        </option>
+
+      </select>
 
     </div>
 
-  </header>
+
+    <div class="form-group">
+
+      <label for="date">
+        選擇日期
+      </label>
+
+      <input
+        type="date"
+        id="date"
+        class="date-input"
+      >
+
+    </div>
 
 
-  <!-- ==================================================
-       MAIN
-  ================================================== -->
+    <div class="time-wrapper">
 
-  <main class="container">
+      <label>
+        選擇時間
+      </label>
 
-    <section class="booking-card">
+      <div
+        id="times"
+        class="times"
+      >
 
-
-      <div class="section-title">
-        預約服務
-      </div>
-
-
-      <div class="section-description">
-        請選擇服務、日期與方便的時間，我們會為您保留預約。
-      </div>
-
-
-      <!-- ==================================================
-           SERVICE
-      ================================================== -->
-
-      <div class="form-group">
-
-        <label for="service">
-          選擇服務
-        </label>
-
-
-        <select id="service">
-
-          <option
-            value="三段深層淨膚課程"
-            data-price="2500"
-          >
-            三段深層淨膚課程｜$2,500
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- ==================================================
-           DATE
-      ================================================== -->
-
-      <div class="form-group">
-
-        <label for="date">
-          選擇日期
-        </label>
-
-
-        <input
-          type="date"
-          id="date"
-          class="date-input"
-        >
-
-      </div>
-
-
-      <!-- ==================================================
-           TIME
-      ================================================== -->
-
-      <div class="time-wrapper">
-
-        <label for="times">
-          選擇時間
-        </label>
-
-
-        <div
-          id="times"
-          class="times"
-        >
-
-          <div class="no-time">
-            請先選擇日期
-          </div>
-
+        <div class="no-time">
+          請先選擇日期
         </div>
 
       </div>
 
-
-      <!-- ==================================================
-           NAME
-      ================================================== -->
-
-      <div class="form-group">
-
-        <label for="name">
-          姓名
-        </label>
+    </div>
 
 
-        <input
-          type="text"
-          id="name"
-          placeholder="請輸入姓名"
-          autocomplete="name"
-        >
+    <div class="form-group">
 
-      </div>
+      <label for="name">
+        姓名
+      </label>
 
-
-      <!-- ==================================================
-           PHONE
-      ================================================== -->
-
-      <div class="form-group">
-
-        <label for="phone">
-          電話
-        </label>
-
-
-        <input
-          type="tel"
-          id="phone"
-          placeholder="請輸入聯絡電話"
-          autocomplete="tel"
-          inputmode="tel"
-        >
-
-      </div>
-
-
-      <!-- ==================================================
-           SUBMIT
-      ================================================== -->
-
-      <button
-        id="submitButton"
-        class="submit"
-        type="button"
+      <input
+        type="text"
+        id="name"
+        placeholder="請輸入姓名"
+        autocomplete="name"
       >
-        確認預約
-      </button>
+
+    </div>
 
 
-      <!-- ==================================================
-           MESSAGE
-      ================================================== -->
+    <div class="form-group">
 
-      <div
-        id="message"
-        class="message"
-      ></div>
+      <label for="phone">
+        電話
+      </label>
 
-
-      <!-- ==================================================
-           LINE STATUS
-      ================================================== -->
-
-      <div
-        id="lineStatus"
-        class="line-status"
+      <input
+        type="tel"
+        id="phone"
+        placeholder="請輸入聯絡電話"
+        autocomplete="tel"
+        inputmode="tel"
       >
-        LINE SDK 載入中...
-      </div>
+
+    </div>
 
 
-    </section>
+    <button
+      id="submitButton"
+      class="submit"
+      type="button"
+    >
+      確認預約
+    </button>
 
-  </main>
+
+    <div
+      id="message"
+      class="message"
+    ></div>
 
 
-  <!-- ==================================================
-       LIFF SDK
-       ★ 一定要放在自己的 JavaScript 前面
-  ================================================== -->
+    <div
+      id="lineStatus"
+      class="line-status"
+    >
+      LINE 初始化中...
+    </div>
+
+  </section>
+
+</main>
+
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
+
 <script>
-  window.addEventListener('load', function () {
-    setMinimumDate();
 
-    // 等待 LIFF SDK 載入
-    waitForLiffSDK();
-  });
+  /* ==================================================
+     設定
+  ================================================== */
 
-  function waitForLiffSDK() {
+  const LIFF_ID =
+    '2011369014-AgBGN7fg';
 
-    const status = document.getElementById('lineStatus');
 
-    if (typeof liff !== 'undefined') {
+  const GAS_API =
+    'https://script.google.com/macros/s/AKfycby9gCv_xiEBwh50GrNibzaPFOOKsuAr7iphUEWIyCVTjZ4xISSo9r4KNNM8xYegrh8/exec';
 
-      console.log('========== LIFF SDK LOADED ==========');
-      console.log('LIFF SDK:', liff);
 
-      status.innerText = 'LINE 初始化中...';
+  let selectedTime = '';
+
+  let lineUserId = '';
+
+  let liffReady = false;
+
+
+  /* ==================================================
+     初始化
+  ================================================== */
+
+  window.addEventListener(
+    'load',
+    function () {
+
+      setMinimumDate();
 
       initLIFF();
 
-      return;
     }
-
-    // 如果 SDK 還沒載入，繼續等待
-    setTimeout(function () {
-      waitForLiffSDK();
-    }, 300);
-
-  }
-</script>
+  );
 
 
-  <script>
+  /* ==================================================
+     日期
+  ================================================== */
 
-    /* ==================================================
-       LIFF ID
-
-       ★★★ 請換成真正的 LIFF ID ★★★
-
-       例如：
-
-       const LIFF_ID = '2001234567-AbCdEfGh';
-
-    ================================================== */
-
-    const LIFF_ID =
-      '2011369014-AgBGN7fg';
+  document
+    .getElementById('date')
+    .addEventListener(
+      'change',
+      loadTimes
+    );
 
 
-    /* ==================================================
-       GLOBAL
-    ================================================== */
+  /* ==================================================
+     預約按鈕
+  ================================================== */
 
-    let selectedTime = '';
+  document
+    .getElementById('submitButton')
+    .addEventListener(
+      'click',
+      submitReservation
+    );
 
-    let lineUserId = '';
 
-    let liffReady = false;
+  /* ==================================================
+     LIFF
+  ================================================== */
 
-    /* ==================================================
-       DATE CHANGE
-    ================================================== */
+  async function initLIFF() {
 
-    document
-      .getElementById('date')
-      .addEventListener(
-        'change',
-        loadTimes
+    const status =
+      document.getElementById(
+        'lineStatus'
       );
 
+    try {
 
-    /* ==================================================
-       SUBMIT
-    ================================================== */
-
-    document
-      .getElementById('submitButton')
-      .addEventListener(
-        'click',
-        submitReservation
-      );
+      status.innerText =
+        'LINE 初始化中...';
 
 
-    /* ==================================================
-       LIFF SDK LOADED
-    ================================================== */
+      await liff.init({
 
-    function onLiffSDKLoaded() {
+        liffId:
+          LIFF_ID
 
-      console.log(
-        '========== LIFF SDK LOADED =========='
-      );
+      });
 
 
       console.log(
-        'typeof liff:',
-        typeof liff
+        'LIFF 初始化成功'
       );
 
 
-      const status =
-        document.getElementById(
-          'lineStatus'
-        );
+      /*
+       * 這裡不再用 userCodeAppPanel
+       *
+       * GitHub Pages 本身就是 LIFF Endpoint
+       */
 
 
       if (
-        typeof liff === 'undefined'
+        !liff.isLoggedIn()
       ) {
 
-        onLiffSDKError();
+        status.innerText =
+          'LINE 登入中...';
+
+
+        liff.login({
+
+          redirectUri:
+            window.location.href
+
+        });
+
 
         return;
 
       }
 
 
-      status.innerText =
-        'LINE 初始化中...';
+      const profile =
+        await liff.getProfile();
 
 
-      initLIFF();
-
-    }
-
-
-    /* ==================================================
-       LIFF SDK ERROR
-    ================================================== */
-
-    function onLiffSDKError() {
-
-      console.error(
-        '========== LIFF SDK LOAD ERROR =========='
+      console.log(
+        'LINE PROFILE:',
+        profile
       );
 
 
-      const status =
-        document.getElementById(
-          'lineStatus'
+      if (
+        !profile ||
+        !profile.userId
+      ) {
+
+        throw new Error(
+          '無法取得 LINE User ID'
         );
+
+      }
+
+
+      lineUserId =
+        profile.userId;
+
+
+      liffReady =
+        true;
 
 
       status.innerText =
-        'LINE SDK 載入失敗';
+        '✓ LINE 已連線';
+
+
+      status.classList.add(
+        'success-status'
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        'LIFF ERROR:',
+        error
+      );
+
+
+      status.innerText =
+        'LINE 初始化失敗';
 
 
       status.classList.add(
@@ -1305,493 +1113,252 @@
       );
 
 
-      showLineError(
-        'LINE SDK 無法載入。' +
-        '請確認網路連線，以及此頁面是否使用 HTTPS。'
+      document
+        .getElementById('message')
+        .innerHTML =
+
+          '<div class="success">' +
+
+            '<div class="success-title">' +
+              'LINE 連線異常' +
+            '</div>' +
+
+            '<div class="success-notice">' +
+
+              escapeHtml(
+                error.message ||
+                String(error)
+              ) +
+
+            '</div>' +
+
+          '</div>';
+
+    }
+
+  }
+
+
+  /* ==================================================
+     日期最小值
+  ================================================== */
+
+  function setMinimumDate() {
+
+    const dateInput =
+      document.getElementById(
+        'date'
+      );
+
+
+    const now =
+      new Date();
+
+
+    const year =
+      now.getFullYear();
+
+
+    const month =
+      String(
+        now.getMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      );
+
+
+    const day =
+      String(
+        now.getDate()
+      ).padStart(
+        2,
+        '0'
+      );
+
+
+    dateInput.min =
+      year +
+      '-' +
+      month +
+      '-' +
+      day;
+
+  }
+
+
+  /* ==================================================
+     呼叫 GAS API
+  ================================================== */
+
+  async function callGAS(action, data) {
+
+    const response =
+      await fetch(
+        GAS_API,
+        {
+
+          method: 'POST',
+
+          headers: {
+
+            'Content-Type':
+              'text/plain;charset=utf-8'
+
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                action,
+
+              data:
+                data || {}
+
+            })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'GAS API HTTP ' +
+        response.status
       );
 
     }
 
 
-    /* ==================================================
-       INIT LIFF
-    ================================================== */
+    const text =
+      await response.text();
 
-    async function initLIFF() {
 
-      const status =
-        document.getElementById(
-          'lineStatus'
+    let result;
+
+
+    try {
+
+      result =
+        JSON.parse(text);
+
+    } catch (error) {
+
+      console.error(
+        'GAS 回傳內容:',
+        text
+      );
+
+      throw new Error(
+        'GAS 回傳不是有效 JSON'
+      );
+
+    }
+
+
+    return result;
+
+  }
+
+
+  /* ==================================================
+     取得可預約時間
+  ================================================== */
+
+  async function loadTimes() {
+
+    selectedTime =
+      '';
+
+
+    const date =
+      document
+        .getElementById('date')
+        .value;
+
+
+    const container =
+      document
+        .getElementById('times');
+
+
+    if (!date) {
+
+      container.innerHTML =
+
+        '<div class="no-time">' +
+          '請先選擇日期' +
+        '</div>';
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+
+      '<div class="no-time">' +
+
+        '<span class="loading">' +
+
+          '<span class="loading-dot"></span>' +
+
+          '<span class="loading-dot"></span>' +
+
+          '<span class="loading-dot"></span>' +
+
+          '讀取可預約時段' +
+
+        '</span>' +
+
+      '</div>';
+
+
+    try {
+
+      const result =
+        await callGAS(
+          'getAvailableTimes',
+          {
+            date:
+              date
+          }
         );
 
 
-      try {
-
-        /* ------------------------------------------
-           檢查 LIFF ID
-        ------------------------------------------ */
-
-        console.log(
-          'LIFF_ID:',
-          LIFF_ID
-        );
-
-
-        console.log(
-          '目前網址:',
-          window.location.href
-        );
-
-
-        /* ------------------------------------------
-           LIFF INIT
-        ------------------------------------------ */
-
-        status.innerText =
-          'LINE 初始化中...';
-
-
-        console.log(
-          '開始 liff.init()'
-        );
-
-
-        const timeoutPromise =
-          new Promise(
-            function (_, reject) {
-
-              setTimeout(
-                function () {
-
-                  reject(
-                    new Error(
-                      'LIFF 初始化超過 20 秒沒有回應。請檢查 LIFF Endpoint URL 是否正確。'
-                    )
-                  );
-
-                },
-                20000
-              );
-
-            }
-          );
-
-
-        await Promise.race(
-          [
-            liff.init({
-              liffId:
-                LIFF_ID
-            }),
-
-            timeoutPromise
-          ]
-        );
-
-
-        console.log(
-          '========== LIFF INIT SUCCESS =========='
-        );
-
-
-        /* ------------------------------------------
-           一般瀏覽器
-        ------------------------------------------ */
-
-        if (
-          !liff.isInClient()
-        ) {
-
-          console.log(
-            '目前不是 LINE App 內建瀏覽器'
-          );
-
-
-          status.innerText =
-            '一般瀏覽器模式';
-
-
-          status.classList.remove(
-            'error-status'
-          );
-
-
-          status.classList.add(
-            'success-status'
-          );
-
-
-          showLineNotice(
-            '目前是一般瀏覽器模式。' +
-            '<br><br>' +
-            '如果要取得 LINE UID，請從 LINE 官方帳號的「立即預約」按鈕開啟此頁面。'
-          );
-
-
-          return;
-
-        }
-
-
-        /* ------------------------------------------
-           LINE App
-        ------------------------------------------ */
-
-        console.log(
-          '目前在 LINE App 內'
-        );
-
-
-        status.innerText =
-          '確認 LINE 登入狀態...';
-
-
-        /* ------------------------------------------
-           LOGIN
-        ------------------------------------------ */
-
-        if (
-          !liff.isLoggedIn()
-        ) {
-
-          console.log(
-            'LINE 尚未登入'
-          );
-
-
-          status.innerText =
-            '正在登入 LINE...';
-
-
-          liff.login({
-            redirectUri:
-              window.location.href
-          });
-
-
-          return;
-
-        }
-
-
-        /* ------------------------------------------
-           GET PROFILE
-        ------------------------------------------ */
-
-        status.innerText =
-          '取得 LINE 使用者資料...';
-
-
-        console.log(
-          '開始取得 LINE Profile'
-        );
-
-
-        const profile =
-          await liff.getProfile();
-
-
-        console.log(
-          'LINE PROFILE:',
-          profile
-        );
-
-
-        /* ------------------------------------------
-           CHECK UID
-        ------------------------------------------ */
-
-        if (
-          !profile ||
-          !profile.userId
-        ) {
-
-          throw new Error(
-            'LINE Profile 取得成功，但沒有 LINE User ID。'
-          );
-
-        }
-
-
-        /* ------------------------------------------
-           SAVE UID
-        ------------------------------------------ */
-
-        lineUserId =
-          profile.userId;
-
-
-        liffReady =
-          true;
-
-
-        /* ------------------------------------------
-           READY
-        ------------------------------------------ */
-
-        status.innerText =
-          '✓ LINE 已連線';
-
-
-        status.classList.remove(
-          'error-status'
-        );
-
-
-        status.classList.add(
-          'success-status'
-        );
-
-
-        document
-          .getElementById('message')
-          .innerHTML =
-            '';
-
-
-        console.log(
-          '========== LINE READY =========='
-        );
-
-
-        console.log(
-          'LINE UID:',
-          lineUserId
+      if (
+        !result ||
+        !result.success
+      ) {
+
+        throw new Error(
+          result &&
+          result.message
+            ? result.message
+            : '讀取時段失敗'
         );
 
       }
 
-      catch (error) {
 
-        console.error(
-          '========== LIFF ERROR =========='
-        );
+      const times =
+        result.times || [];
 
 
-        console.error(
-          error
-        );
-
-
-        status.innerText =
-          'LINE 初始化失敗';
-
-
-        status.classList.remove(
-          'success-status'
-        );
-
-
-        status.classList.add(
-          'error-status'
-        );
-
-
-        showLineError(
-          error.message ||
-          String(error)
-        );
-
-      }
-
-    }
-
-
-    /* ==================================================
-       LINE NOTICE
-    ================================================== */
-
-    function showLineNotice(text) {
-
-      const message =
-        document.getElementById(
-          'message'
-        );
-
-
-      message.innerHTML =
-
-        '<div class="success">' +
-
-          '<div class="success-title">' +
-            'LINE 預約提醒' +
-          '</div>' +
-
-          '<div class="success-notice">' +
-            text +
-          '</div>' +
-
-        '</div>';
-
-    }
-
-
-    /* ==================================================
-       LINE ERROR
-    ================================================== */
-
-    function showLineError(
-      errorMessage
-    ) {
-
-      const message =
-        document.getElementById(
-          'message'
-        );
-
-
-      message.innerHTML =
-
-        '<div class="success">' +
-
-          '<div class="success-title">' +
-            'LINE 連線異常' +
-          '</div>' +
-
-          '<div class="success-notice">' +
-
-            '<strong>錯誤訊息</strong><br>' +
-
-            escapeHtml(
-              errorMessage
-            ) +
-
-            '<br><br>' +
-
-            '<strong>請確認：</strong><br><br>' +
-
-            '① LIFF ID 是否正確<br>' +
-
-            '② LIFF Endpoint URL 是否正確<br>' +
-
-            '③ LINE Login Channel 是否啟用<br>' +
-
-            '④ 是否從 LINE 官方帳號的 LIFF 按鈕開啟<br>' +
-
-            '⑤ GAS Web App 是否部署為「任何人」可存取<br>' +
-
-          '</div>' +
-
-        '</div>';
-
-    }
-
-
-    /* ==================================================
-       HTML ESCAPE
-    ================================================== */
-
-    function escapeHtml(value) {
-
-      return String(value)
-
-        .replace(
-          /&/g,
-          '&amp;'
-        )
-
-        .replace(
-          /</g,
-          '&lt;'
-        )
-
-        .replace(
-          />/g,
-          '&gt;'
-        )
-
-        .replace(
-          /"/g,
-          '&quot;'
-        )
-
-        .replace(
-          /'/g,
-          '&#039;'
-        );
-
-    }
-
-
-    /* ==================================================
-       MINIMUM DATE
-    ================================================== */
-
-    function setMinimumDate() {
-
-      const dateInput =
-        document.getElementById(
-          'date'
-        );
-
-
-      const now =
-        new Date();
-
-
-      const year =
-        now.getFullYear();
-
-
-      const month =
-        String(
-          now.getMonth() + 1
-        ).padStart(
-          2,
-          '0'
-        );
-
-
-      const day =
-        String(
-          now.getDate()
-        ).padStart(
-          2,
-          '0'
-        );
-
-
-      const today =
-        year +
-        '-' +
-        month +
-        '-' +
-        day;
-
-
-      dateInput.min =
-        today;
-
-    }
-
-
-    /* ==================================================
-       LOAD AVAILABLE TIMES
-    ================================================== */
-
-    function loadTimes() {
-
-      selectedTime =
+      container.innerHTML =
         '';
 
 
-      const date =
-        document
-          .getElementById('date')
-          .value;
-
-
-      const container =
-        document
-          .getElementById('times');
-
-
-      if (!date) {
+      if (
+        times.length === 0
+      ) {
 
         container.innerHTML =
 
           '<div class="no-time">' +
-            '請先選擇日期' +
+            '這天沒有可預約時段' +
           '</div>';
 
         return;
@@ -1799,561 +1366,453 @@
       }
 
 
-      container.innerHTML =
+      times.forEach(
+        function(time) {
 
-        '<div class="no-time">' +
-
-          '<span class="loading">' +
-
-            '<span class="loading-dot"></span>' +
-
-            '<span class="loading-dot"></span>' +
-
-            '<span class="loading-dot"></span>' +
-
-            '讀取可預約時段' +
-
-          '</span>' +
-
-        '</div>';
+          const button =
+            document.createElement(
+              'button'
+            );
 
 
-      google.script.run
-
-        .withSuccessHandler(
-          function (times) {
-
-            container.innerHTML =
-              '';
+          button.type =
+            'button';
 
 
-            if (
-              !times ||
-              times.length === 0
-            ) {
-
-              container.innerHTML =
-
-                '<div class="no-time">' +
-                  '這天沒有可預約時段' +
-                '</div>';
-
-              return;
-
-            }
+          button.className =
+            'time-button';
 
 
-            times.forEach(
-              function (time) {
-
-                const button =
-                  document.createElement(
-                    'button'
-                  );
+          button.innerText =
+            time;
 
 
-                button.type =
-                  'button';
+          button.addEventListener(
+            'click',
+            function() {
+
+              selectedTime =
+                time;
 
 
-                button.className =
-                  'time-button';
+              document
+                .querySelectorAll(
+                  '.time-button'
+                )
+                .forEach(
+                  function(btn) {
 
-
-                button.innerText =
-                  time;
-
-
-                button.onclick =
-                  function () {
-
-                    selectedTime =
-                      time;
-
-
-                    document
-                      .querySelectorAll(
-                        '.time-button'
-                      )
-                      .forEach(
-                        function (btn) {
-
-                          btn.classList.remove(
-                            'selected'
-                          );
-
-                        }
-                      );
-
-
-                    button.classList.add(
+                    btn.classList.remove(
                       'selected'
                     );
 
-                  };
-
-
-                container.appendChild(
-                  button
+                  }
                 );
 
-              }
-            );
 
-          }
-        )
+              button.classList.add(
+                'selected'
+              );
 
-
-        .withFailureHandler(
-          function (error) {
-
-            console.error(
-              'getAvailableTimes ERROR:',
-              error
-            );
+            }
+          );
 
 
-            container.innerHTML =
+          container.appendChild(
+            button
+          );
 
-              '<div class="no-time">' +
-                '讀取失敗，請重新整理頁面後再試。' +
-              '</div>';
-
-          }
-        )
+        }
+      );
 
 
-        .getAvailableTimes(
-          date
-        );
+    } catch (error) {
+
+      console.error(
+        'loadTimes ERROR:',
+        error
+      );
+
+
+      container.innerHTML =
+
+        '<div class="no-time">' +
+          '讀取失敗：' +
+          escapeHtml(
+            error.message
+          ) +
+        '</div>';
+
+    }
+
+  }
+
+
+  /* ==================================================
+     建立預約
+  ================================================== */
+
+  async function submitReservation() {
+
+    const date =
+      document
+        .getElementById('date')
+        .value;
+
+
+    const name =
+      document
+        .getElementById('name')
+        .value
+        .trim();
+
+
+    const phone =
+      document
+        .getElementById('phone')
+        .value
+        .trim();
+
+
+    const serviceElement =
+      document.getElementById(
+        'service'
+      );
+
+
+    const service =
+      serviceElement.value;
+
+
+    const price =
+      serviceElement
+        .selectedOptions[0]
+        .dataset.price;
+
+
+    const button =
+      document.getElementById(
+        'submitButton'
+      );
+
+
+    const message =
+      document.getElementById(
+        'message'
+      );
+
+
+    if (
+      !liffReady ||
+      !lineUserId
+    ) {
+
+      alert(
+        'LINE 尚未連線，請從 LINE 官方帳號開啟預約。'
+      );
+
+      return;
 
     }
 
 
-    /* ==================================================
-       SUBMIT RESERVATION
-    ================================================== */
+    if (!date) {
 
-    function submitReservation() {
+      alert(
+        '請選擇日期'
+      );
 
-      const date =
-        document
-          .getElementById('date')
-          .value;
+      return;
 
-
-      const name =
-        document
-          .getElementById('name')
-          .value
-          .trim();
+    }
 
 
-      const phone =
-        document
-          .getElementById('phone')
-          .value
-          .trim();
+    if (!selectedTime) {
+
+      alert(
+        '請選擇時間'
+      );
+
+      return;
+
+    }
 
 
-      const serviceElement =
-        document.getElementById(
-          'service'
+    if (!name) {
+
+      alert(
+        '請輸入姓名'
+      );
+
+      return;
+
+    }
+
+
+    if (!phone) {
+
+      alert(
+        '請輸入電話'
+      );
+
+      return;
+
+    }
+
+
+    button.disabled =
+      true;
+
+
+    button.innerText =
+      '預約處理中...';
+
+
+    message.innerHTML =
+      '';
+
+
+    try {
+
+      const result =
+        await callGAS(
+          'createReservation',
+          {
+
+            date:
+              date,
+
+            time:
+              selectedTime,
+
+            service:
+              service,
+
+            price:
+              price,
+
+            name:
+              name,
+
+            phone:
+              phone,
+
+            lineUserId:
+              lineUserId
+
+          }
         );
 
-
-      const service =
-        serviceElement.value;
-
-
-      const price =
-        serviceElement
-          .selectedOptions[0]
-          .dataset.price;
-
-
-      const button =
-        document.getElementById(
-          'submitButton'
-        );
-
-
-      const message =
-        document.getElementById(
-          'message'
-        );
-
-
-      /* ------------------------------------------
-         LINE CHECK
-      ------------------------------------------ */
 
       if (
-        !lineUserId ||
-        !liffReady
+        result &&
+        result.success
       ) {
 
-        alert(
-          'LINE 尚未連線，請從 LINE 官方帳號的「立即預約」按鈕開啟此頁面。'
-        );
+        message.innerHTML =
 
-        return;
+          '<div class="success">' +
 
-      }
+            '<div class="success-title">' +
+              '🎉 預約成功！' +
+            '</div>' +
+
+            '<div class="reservation-id">' +
+
+              escapeHtml(
+                result.reservationId
+              ) +
+
+            '</div>' +
+
+            '<div class="success-info">' +
+
+              successRow(
+                '日期',
+                result.date
+              ) +
+
+              successRow(
+                '時間',
+                result.time
+              ) +
+
+              successRow(
+                '服務',
+                result.service
+              ) +
+
+              successRow(
+                '價格',
+                '$' + result.price
+              ) +
+
+            '</div>' +
+
+            '<div class="success-notice">' +
+              '預約確認通知已傳送至您的 LINE。' +
+            '</div>' +
+
+          '</div>';
 
 
-      /* ------------------------------------------
-         DATE
-      ------------------------------------------ */
-
-      if (!date) {
-
-        alert(
-          '請選擇日期'
-        );
+        selectedTime =
+          '';
 
 
         document
           .getElementById('date')
-          .focus();
+          .value =
+          '';
 
 
-        return;
+        document
+          .getElementById('times')
+          .innerHTML =
 
-      }
-
-
-      /* ------------------------------------------
-         TIME
-      ------------------------------------------ */
-
-      if (!selectedTime) {
-
-        alert(
-          '請選擇時間'
-        );
-
-        return;
-
-      }
-
-
-      /* ------------------------------------------
-         NAME
-      ------------------------------------------ */
-
-      if (!name) {
-
-        alert(
-          '請輸入姓名'
-        );
+            '<div class="no-time">' +
+              '請先選擇日期' +
+            '</div>';
 
 
         document
           .getElementById('name')
-          .focus();
-
-
-        return;
-
-      }
-
-
-      /* ------------------------------------------
-         PHONE
-      ------------------------------------------ */
-
-      if (!phone) {
-
-        alert(
-          '請輸入電話'
-        );
+          .value =
+          '';
 
 
         document
           .getElementById('phone')
-          .focus();
+          .value =
+          '';
 
 
-        return;
+        message.scrollIntoView({
 
-      }
+          behavior:
+            'smooth',
 
-
-      /* ------------------------------------------
-         PREVENT DOUBLE CLICK
-      ------------------------------------------ */
-
-      button.disabled =
-        true;
-
-
-      button.innerText =
-        '預約處理中...';
-
-
-      message.innerHTML =
-        '';
-
-
-      /* ------------------------------------------
-         CREATE RESERVATION
-      ------------------------------------------ */
-
-      google.script.run
-
-        .withSuccessHandler(
-          function (result) {
-
-            button.disabled =
-              false;
-
-
-            button.innerText =
-              '確認預約';
-
-
-            /* ======================================
-               SUCCESS
-            ====================================== */
-
-            if (
-              result &&
-              result.success
-            ) {
-
-              message.innerHTML =
-
-                '<div class="success">' +
-
-                  '<div class="success-title">' +
-                    '🎉 預約成功！' +
-                  '</div>' +
-
-                  '<div class="reservation-id">' +
-
-                    escapeHtml(
-                      result.reservationId
-                    ) +
-
-                  '</div>' +
-
-                  '<div class="success-info">' +
-
-                    '<div class="success-row">' +
-
-                      '<div class="success-label">' +
-                        '日期' +
-                      '</div>' +
-
-                      '<div class="success-value">' +
-
-                        escapeHtml(
-                          result.date
-                        ) +
-
-                      '</div>' +
-
-                    '</div>' +
-
-
-                    '<div class="success-row">' +
-
-                      '<div class="success-label">' +
-                        '時間' +
-                      '</div>' +
-
-                      '<div class="success-value">' +
-
-                        escapeHtml(
-                          result.time
-                        ) +
-
-                      '</div>' +
-
-                    '</div>' +
-
-
-                    '<div class="success-row">' +
-
-                      '<div class="success-label">' +
-                        '服務' +
-                      '</div>' +
-
-                      '<div class="success-value">' +
-
-                        escapeHtml(
-                          result.service
-                        ) +
-
-                      '</div>' +
-
-                    '</div>' +
-
-
-                    '<div class="success-row">' +
-
-                      '<div class="success-label">' +
-                        '價格' +
-                      '</div>' +
-
-                      '<div class="success-value">' +
-
-                        '$' +
-
-                        escapeHtml(
-                          result.price
-                        ) +
-
-                      '</div>' +
-
-                    '</div>' +
-
-                  '</div>' +
-
-
-                  '<div class="success-notice">' +
-                    '預約確認通知已傳送至您的 LINE。' +
-                  '</div>' +
-
-                '</div>';
-
-
-              /* --------------------------------------
-                 RESET
-              -------------------------------------- */
-
-              selectedTime =
-                '';
-
-
-              document
-                .getElementById('date')
-                .value =
-                '';
-
-
-              document
-                .getElementById('times')
-                .innerHTML =
-
-                  '<div class="no-time">' +
-                    '請先選擇日期' +
-                  '</div>';
-
-
-              document
-                .getElementById('name')
-                .value =
-                '';
-
-
-              document
-                .getElementById('phone')
-                .value =
-                '';
-
-
-              setTimeout(
-                function () {
-
-                  message.scrollIntoView({
-
-                    behavior:
-                      'smooth',
-
-                    block:
-                      'center'
-
-                  });
-
-                },
-                100
-              );
-
-            }
-
-
-            /* ======================================
-               FAILED
-            ====================================== */
-
-            else {
-
-              alert(
-
-                result &&
-                result.message
-
-                  ? result.message
-
-                  : '預約失敗，請稍後再試。'
-
-              );
-
-
-              loadTimes();
-
-            }
-
-          }
-        )
-
-
-        .withFailureHandler(
-          function (error) {
-
-            button.disabled =
-              false;
-
-
-            button.innerText =
-              '確認預約';
-
-
-            console.error(
-              'createReservation ERROR:',
-              error
-            );
-
-
-            alert(
-              '系統發生錯誤，請稍後再試。'
-            );
-
-          }
-        )
-
-
-        .createReservation({
-
-          date:
-            date,
-
-          time:
-            selectedTime,
-
-          service:
-            service,
-
-          price:
-            price,
-
-          name:
-            name,
-
-          phone:
-            phone,
-
-          lineUserId:
-            lineUserId
+          block:
+            'center'
 
         });
 
+
+      } else {
+
+        alert(
+
+          result &&
+          result.message
+
+            ? result.message
+
+            : '預約失敗，請稍後再試。'
+
+        );
+
+
+        loadTimes();
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        'createReservation ERROR:',
+        error
+      );
+
+
+      alert(
+        '系統發生錯誤：' +
+        error.message
+      );
+
     }
 
-  </script>
 
+    button.disabled =
+      false;
+
+
+    button.innerText =
+      '確認預約';
+
+  }
+
+
+  /* ==================================================
+     成功資料列
+  ================================================== */
+
+  function successRow(
+    label,
+    value
+  ) {
+
+    return
+
+      '<div class="success-row">' +
+
+        '<div class="success-label">' +
+
+          escapeHtml(
+            label
+          ) +
+
+        '</div>' +
+
+        '<div class="success-value">' +
+
+          escapeHtml(
+            value
+          ) +
+
+        '</div>' +
+
+      '</div>';
+
+  }
+
+
+  /* ==================================================
+     HTML Escape
+  ================================================== */
+
+  function escapeHtml(value) {
+
+    return String(value)
+
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+
+      .replace(
+        /</g,
+        '&lt;'
+      )
+
+      .replace(
+        />/g,
+        '&gt;'
+      )
+
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+
+      .replace(
+        /'/g,
+        '&#039;'
+      );
+
+  }
+
+</script>
 
 </body>
 
