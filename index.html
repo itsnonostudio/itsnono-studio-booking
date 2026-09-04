@@ -588,6 +588,67 @@
 
 
     /* =========================
+       DEPOSIT PANEL（新客訂金）
+    ========================= */
+
+    .deposit-panel {
+      margin-top: 24px;
+
+      padding: 18px 16px 20px;
+
+      border-radius: 14px;
+
+      background: #FFFDF8;
+
+      border: 1px solid #E9C99D;
+    }
+
+    .deposit-title {
+      color: #3F6257;
+
+      font-size: 17px;
+
+      font-weight: 800;
+
+      margin-bottom: 10px;
+    }
+
+    .deposit-rules {
+      color: #71847B;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+
+      margin-bottom: 14px;
+    }
+
+    .deposit-account {
+      padding: 12px 14px;
+
+      border-radius: 10px;
+
+      background: #F1F8F3;
+
+      color: #3F6257;
+
+      font-size: 14px;
+
+      margin-bottom: 6px;
+
+      text-align: center;
+    }
+
+    .deposit-account strong {
+      color: #F18782;
+
+      font-size: 16px;
+
+      letter-spacing: 1px;
+    }
+
+
+    /* =========================
        MESSAGE
     ========================= */
 
@@ -926,7 +987,7 @@
     </div>
 
     <div class="section-description">
-      請選擇服務、日期與方便的時間，我們會為您保留預約。
+      請選擇服務、日期與方便的時間，我們會為您保留預約。首次預約需支付訂金 $500。
     </div>
 
 
@@ -1033,6 +1094,58 @@
     </button>
 
 
+    <!--
+      新客訂金說明區塊，預設隱藏。
+      只有在「確認預約」時查不到會員資料，才會顯示出來。
+    -->
+
+    <div
+      id="depositPanel"
+      class="deposit-panel"
+      style="display:none;"
+    >
+
+      <div class="deposit-title">
+        新客戶訂金說明
+      </div>
+
+      <div class="deposit-rules">
+        ・首次預約需先支付訂金 $500，並於課程當天折抵課程費用。<br>
+        ・請匯款至下方帳號，並填寫匯款帳號後五碼，我們確認匯款後即完成正式預約。<br>
+        ・匯款確認前，此預約狀態將顯示為「待確認」。
+      </div>
+
+      <div class="deposit-account">
+        匯款帳號：<strong>XXXX-XXXX-XXXX-XXXX</strong>
+      </div>
+
+      <div class="form-group">
+
+        <label for="depositLast5">
+          匯款帳號後五碼
+        </label>
+
+        <input
+          type="text"
+          id="depositLast5"
+          placeholder="請輸入匯款帳號後五碼"
+          inputmode="numeric"
+          maxlength="5"
+        >
+
+      </div>
+
+      <button
+        id="depositConfirmButton"
+        class="submit"
+        type="button"
+      >
+        確認訂金並完成預約
+      </button>
+
+    </div>
+
+
     <div
       id="message"
       class="message"
@@ -1074,7 +1187,6 @@
 
   let calendarViewDate = new Date();
 
-  // 快取「這個月」的可預約日期查詢結果
   let monthAvailability = {};
 
   let monthAvailabilityKey = '';
@@ -1084,6 +1196,9 @@
   let lineUserId = '';
 
   let liffReady = false;
+
+  // 暫存「還沒送出」的預約資料，等使用者填完訂金後五碼再一起送出
+  let pendingReservationData = null;
 
 
   /* ==================================================
@@ -1103,7 +1218,7 @@
 
 
   /* ==================================================
-     預約按鈕
+     按鈕事件
   ================================================== */
 
   document
@@ -1111,6 +1226,14 @@
     .addEventListener(
       'click',
       submitReservation
+    );
+
+
+  document
+    .getElementById('depositConfirmButton')
+    .addEventListener(
+      'click',
+      confirmDepositAndSubmit
     );
 
 
@@ -1149,11 +1272,6 @@
   }
 
 
-  /* --------------------------------------------------
-     查詢「這個月」哪些日期還能預約
-     結果快取在 monthAvailability，同一個月不重複打 API
-  -------------------------------------------------- */
-
   async function ensureMonthAvailability(year, month) {
 
     const key =
@@ -1162,7 +1280,6 @@
 
     if (key === monthAvailabilityKey) {
 
-      // 已經查過這個月，不用再打 API
       return;
 
     }
@@ -1193,7 +1310,6 @@
 
       } else {
 
-        // 查詢失敗，不擋使用者選日期
         monthAvailability = {};
 
         monthAvailabilityFailed =
@@ -1210,7 +1326,6 @@
       );
 
 
-      // 查詢失敗，不擋使用者選日期
       monthAvailability = {};
 
       monthAvailabilityFailed =
@@ -1225,10 +1340,6 @@
   }
 
 
-  /* --------------------------------------------------
-     月曆入口：先確保拿到這個月的可預約資料，再畫格子
-  -------------------------------------------------- */
-
   async function renderCalendar() {
 
     const container =
@@ -1242,7 +1353,6 @@
       calendarViewDate.getMonth();
 
 
-    // 第一次載入這個月的資料時，先顯示讀取中
     if (
       toYearMonthStr(year, month) !== monthAvailabilityKey
     ) {
@@ -1278,10 +1388,6 @@
 
   }
 
-
-  /* --------------------------------------------------
-     根據 monthAvailability 畫出月曆格子
-  -------------------------------------------------- */
 
   function renderCalendarGrid() {
 
@@ -1391,15 +1497,6 @@
       const isSelected =
         dateStr === selectedDate;
 
-
-      /*
-       * monthAvailability 只會列出「營業時間」表裡
-       * 有設定的日期。沒出現在裡面，或被標記為 false，
-       * 都視為這天不能預約（例如公休、或時段已被約滿）。
-       *
-       * 如果查詢失敗（monthAvailabilityFailed），
-       * 為了不擋住使用者，一律視為可選。
-       */
 
       const hasAvailability =
         Object.prototype.hasOwnProperty.call(
@@ -1849,12 +1946,6 @@
       times.forEach(
         function(entry) {
 
-          /*
-           * entry 可能是純字串 "18:00"
-           * 也可能是物件 { time: "18:00", available: false }
-           * 兩種格式都相容
-           */
-
           const time =
             typeof entry === 'string'
               ? entry
@@ -1985,10 +2076,6 @@
   }
 
 
-  /* ==================================================
-     判斷該時段是否已經過去（只影響選「今天」時）
-  ================================================== */
-
   function isTimeInPast(dateStr, timeStr) {
 
     if (!dateStr || !timeStr) {
@@ -2007,11 +2094,6 @@
         now.getDate()
       );
 
-
-    /*
-     * 只有選到「今天」才需要比對時間
-     * 未來日期一律視為可預約
-     */
 
     if (dateStr !== todayStr) {
       return false;
@@ -2049,7 +2131,11 @@
 
 
   /* ==================================================
-     建立預約
+     步驟一：確認預約
+     - 先檢查基本欄位
+     - 呼叫後端確認是否為會員
+     - 會員 -> 直接建立預約
+     - 非會員 -> 顯示新客訂金說明，等待填寫後五碼
   ================================================== */
 
   async function submitReservation() {
@@ -2158,143 +2244,102 @@
     }
 
 
-    button.disabled =
-      true;
-
-
-    button.innerText =
-      '預約處理中...';
+    // 每次重新確認流程時，先隱藏訂金區塊
+    document
+      .getElementById('depositPanel')
+      .style.display =
+        'none';
 
 
     message.innerHTML =
       '';
 
 
+    button.disabled =
+      true;
+
+
+    button.innerText =
+      '確認會員資料中...';
+
+
+    const reservationData = {
+
+      date:
+        date,
+
+      time:
+        selectedTime,
+
+      service:
+        service,
+
+      price:
+        price,
+
+      name:
+        name,
+
+      phone:
+        phone,
+
+      lineUserId:
+        lineUserId
+
+    };
+
+
     try {
 
-      const result =
+      const memberResult =
         await callGAS(
-          'createReservation',
+          'checkMember',
           {
-
-            date:
-              date,
-
-            time:
-              selectedTime,
-
-            service:
-              service,
-
-            price:
-              price,
-
-            name:
-              name,
-
             phone:
-              phone,
-
-            lineUserId:
-              lineUserId
-
+              phone
           }
         );
 
 
       if (
-        result &&
-        result.success
+        !memberResult ||
+        !memberResult.success
       ) {
 
-      message.innerHTML =
+        throw new Error(
+          '會員資料確認失敗，請稍後再試。'
+        );
 
-          '<div class="success">' +
-
-            '<div class="success-title">' +
-              '🎉 預約成功！' +
-            '</div>' +
-
-            '<div class="reservation-id">' +
-              escapeHtml(result.reservationId || '') +
-            '</div>' +
-
-            '<div class="success-info">' +
-
-              successRow(
-                '日期',
-                result.date || ''
-              ) +
-
-              successRow(
-                '時間',
-                formatTime(result.time)
-              ) +
-
-              successRow(
-                '服務',
-                result.service || ''
-              ) +
-
-              successRow(
-                '價格',
-                '$' + (result.price || '')
-              ) +
-
-            '</div>' +
-
-            '<div class="success-notice">' +
-              '預約確認通知已傳送至您的 LINE。' +
-            '</div>' +
-
-          '</div>';
+      }
 
 
-        selectedTime =
-          '';
+      if (memberResult.isMember) {
+
+        // 舊會員，直接建立正式預約
+        await doCreateReservation(
+          reservationData,
+          false,
+          ''
+        );
+
+      } else {
+
+        // 新客，暫存資料並顯示訂金說明
+        pendingReservationData =
+          reservationData;
 
 
-        selectedDate =
-          '';
+        const depositPanel =
+          document.getElementById(
+            'depositPanel'
+          );
 
 
-        calendarViewDate =
-          new Date();
+        depositPanel.style.display =
+          'block';
 
 
-        // 剛完成的預約可能讓當天額滿，強制重新查詢這個月
-        monthAvailabilityKey =
-          '';
-
-
-        renderCalendar();
-
-
-        updateSelectedDateLabel();
-
-
-        document
-          .getElementById('times')
-          .innerHTML =
-
-            '<div class="no-time">' +
-              '請先選擇日期' +
-            '</div>';
-
-
-        document
-          .getElementById('name')
-          .value =
-          '';
-
-
-        document
-          .getElementById('phone')
-          .value =
-          '';
-
-
-        message.scrollIntoView({
+        depositPanel.scrollIntoView({
 
           behavior:
             'smooth',
@@ -2303,6 +2348,146 @@
             'center'
 
         });
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        'submitReservation ERROR:',
+        error
+      );
+
+
+      alert(
+        '系統發生錯誤：' +
+        error.message
+      );
+
+    }
+
+
+    button.disabled =
+      false;
+
+
+    button.innerText =
+      '確認預約';
+
+  }
+
+
+  /* ==================================================
+     步驟二（僅新客）：確認訂金並送出預約
+  ================================================== */
+
+  async function confirmDepositAndSubmit() {
+
+    if (!pendingReservationData) {
+
+      alert(
+        '請先填寫預約資訊並按下「確認預約」。'
+      );
+
+      return;
+
+    }
+
+
+    const last5 =
+      document
+        .getElementById('depositLast5')
+        .value
+        .trim();
+
+
+    if (
+      !/^\d{5}$/.test(last5)
+    ) {
+
+      alert(
+        '請輸入正確的匯款帳號後五碼（5 位數字）'
+      );
+
+      return;
+
+    }
+
+
+    const button =
+      document.getElementById(
+        'depositConfirmButton'
+      );
+
+
+    button.disabled =
+      true;
+
+
+    button.innerText =
+      '處理中...';
+
+
+    await doCreateReservation(
+      pendingReservationData,
+      true,
+      last5
+    );
+
+
+    button.disabled =
+      false;
+
+
+    button.innerText =
+      '確認訂金並完成預約';
+
+  }
+
+
+  /* ==================================================
+     實際呼叫後端建立預約
+  ================================================== */
+
+  async function doCreateReservation(data, isNewCustomer, depositLast5) {
+
+    try {
+
+      const payload =
+        Object.assign(
+          {},
+          data,
+          {
+
+            isNewCustomer:
+              isNewCustomer,
+
+            depositLast5:
+              depositLast5
+
+          }
+        );
+
+
+      const result =
+        await callGAS(
+          'createReservation',
+          payload
+        );
+
+
+      if (
+        result &&
+        result.success
+      ) {
+
+        renderSuccessMessage(
+          result
+        );
+
+
+        resetForm();
 
 
       } else {
@@ -2339,13 +2524,164 @@
 
     }
 
-
-    button.disabled =
-      false;
+  }
 
 
-    button.innerText =
-      '確認預約';
+  /* ==================================================
+     顯示預約成功／待確認訊息
+  ================================================== */
+
+  function renderSuccessMessage(result) {
+
+    const message =
+      document.getElementById(
+        'message'
+      );
+
+
+    const isPending =
+      result.status === '待確認';
+
+
+    message.innerHTML =
+
+      '<div class="success">' +
+
+        '<div class="success-title">' +
+          (
+            isPending
+              ? '📋 預約待確認'
+              : '🎉 預約成功！'
+          ) +
+        '</div>' +
+
+        '<div class="reservation-id">' +
+          escapeHtml(result.reservationId || '') +
+        '</div>' +
+
+        '<div class="success-info">' +
+
+          successRow(
+            '日期',
+            result.date || ''
+          ) +
+
+          successRow(
+            '時間',
+            formatTime(result.time)
+          ) +
+
+          successRow(
+            '服務',
+            result.service || ''
+          ) +
+
+          successRow(
+            '價格',
+            '$' + (result.price || '')
+          ) +
+
+          (
+            isPending
+              ? successRow(
+                  '訂金後五碼',
+                  result.depositLast5 || ''
+                )
+              : ''
+          ) +
+
+        '</div>' +
+
+        '<div class="success-notice">' +
+
+          (
+            isPending
+              ? '已收到您的訂金資訊，我們將盡快為您確認匯款，確認後將以 LINE 通知您正式預約成功。'
+              : '預約確認通知已傳送至您的 LINE。'
+          ) +
+
+        '</div>' +
+
+      '</div>';
+
+
+    document
+      .getElementById('depositPanel')
+      .style.display =
+        'none';
+
+
+    document
+      .getElementById('depositLast5')
+      .value =
+        '';
+
+
+    pendingReservationData =
+      null;
+
+
+    message.scrollIntoView({
+
+      behavior:
+        'smooth',
+
+      block:
+        'center'
+
+    });
+
+  }
+
+
+  /* ==================================================
+     重置表單
+  ================================================== */
+
+  function resetForm() {
+
+    selectedTime =
+      '';
+
+
+    selectedDate =
+      '';
+
+
+    calendarViewDate =
+      new Date();
+
+
+    // 剛完成的預約可能讓當天額滿，強制重新查詢這個月
+    monthAvailabilityKey =
+      '';
+
+
+    renderCalendar();
+
+
+    updateSelectedDateLabel();
+
+
+    document
+      .getElementById('times')
+      .innerHTML =
+
+        '<div class="no-time">' +
+          '請先選擇日期' +
+        '</div>';
+
+
+    document
+      .getElementById('name')
+      .value =
+      '';
+
+
+    document
+      .getElementById('phone')
+      .value =
+      '';
 
   }
 
