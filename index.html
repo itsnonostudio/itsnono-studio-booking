@@ -1074,6 +1074,13 @@
 
   let calendarViewDate = new Date();
 
+  // 快取「這個月」的可預約日期查詢結果
+  let monthAvailability = {};
+
+  let monthAvailabilityKey = '';
+
+  let monthAvailabilityFailed = false;
+
   let lineUserId = '';
 
   let liffReady = false;
@@ -1131,7 +1138,152 @@
   }
 
 
-  function renderCalendar() {
+  function toYearMonthStr(year, month) {
+
+    return (
+      year +
+      '-' +
+      pad2(month + 1)
+    );
+
+  }
+
+
+  /* --------------------------------------------------
+     查詢「這個月」哪些日期還能預約
+     結果快取在 monthAvailability，同一個月不重複打 API
+  -------------------------------------------------- */
+
+  async function ensureMonthAvailability(year, month) {
+
+    const key =
+      toYearMonthStr(year, month);
+
+
+    if (key === monthAvailabilityKey) {
+
+      // 已經查過這個月，不用再打 API
+      return;
+
+    }
+
+
+    try {
+
+      const result =
+        await callGAS(
+          'getAvailableDatesInMonth',
+          {
+            yearMonth:
+              key
+          }
+        );
+
+
+      if (
+        result &&
+        result.success
+      ) {
+
+        monthAvailability =
+          result.dates || {};
+
+        monthAvailabilityFailed =
+          false;
+
+      } else {
+
+        // 查詢失敗，不擋使用者選日期
+        monthAvailability = {};
+
+        monthAvailabilityFailed =
+          true;
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        'ensureMonthAvailability ERROR:',
+        error
+      );
+
+
+      // 查詢失敗，不擋使用者選日期
+      monthAvailability = {};
+
+      monthAvailabilityFailed =
+        true;
+
+    }
+
+
+    monthAvailabilityKey =
+      key;
+
+  }
+
+
+  /* --------------------------------------------------
+     月曆入口：先確保拿到這個月的可預約資料，再畫格子
+  -------------------------------------------------- */
+
+  async function renderCalendar() {
+
+    const container =
+      document.getElementById('calendar');
+
+
+    const year =
+      calendarViewDate.getFullYear();
+
+    const month =
+      calendarViewDate.getMonth();
+
+
+    // 第一次載入這個月的資料時，先顯示讀取中
+    if (
+      toYearMonthStr(year, month) !== monthAvailabilityKey
+    ) {
+
+      container.innerHTML =
+
+        '<div class="no-time">' +
+
+          '<span class="loading">' +
+
+            '<span class="loading-dot"></span>' +
+
+            '<span class="loading-dot"></span>' +
+
+            '<span class="loading-dot"></span>' +
+
+            '讀取可預約日期' +
+
+          '</span>' +
+
+        '</div>';
+
+    }
+
+
+    await ensureMonthAvailability(
+      year,
+      month
+    );
+
+
+    renderCalendarGrid();
+
+  }
+
+
+  /* --------------------------------------------------
+     根據 monthAvailability 畫出月曆格子
+  -------------------------------------------------- */
+
+  function renderCalendarGrid() {
 
     const container =
       document.getElementById('calendar');
@@ -1240,10 +1392,37 @@
         dateStr === selectedDate;
 
 
+      /*
+       * monthAvailability 只會列出「營業時間」表裡
+       * 有設定的日期。沒出現在裡面，或被標記為 false，
+       * 都視為這天不能預約（例如公休、或時段已被約滿）。
+       *
+       * 如果查詢失敗（monthAvailabilityFailed），
+       * 為了不擋住使用者，一律視為可選。
+       */
+
+      const hasAvailability =
+        Object.prototype.hasOwnProperty.call(
+          monthAvailability,
+          dateStr
+        )
+          ? monthAvailability[dateStr]
+          : false;
+
+      const isUnavailable =
+        monthAvailabilityFailed
+          ? false
+          : !hasAvailability;
+
+
+      const isDisabled =
+        isPast || isUnavailable;
+
+
       let cls =
         'calendar-day';
 
-      if (isPast) cls += ' disabled';
+      if (isDisabled) cls += ' disabled';
 
       if (isToday) cls += ' today';
 
@@ -1257,7 +1436,7 @@
         '" data-date="' +
           dateStr +
         '"' +
-        (isPast ? ' disabled' : '') +
+        (isDisabled ? ' disabled' : '') +
         '>' +
           d +
         '</button>';
@@ -1318,7 +1497,7 @@
               selectedDate =
                 btn.dataset.date;
 
-              renderCalendar();
+              renderCalendarGrid();
 
               updateSelectedDateLabel();
 
@@ -2081,6 +2260,11 @@
 
         calendarViewDate =
           new Date();
+
+
+        // 剛完成的預約可能讓當天額滿，強制重新查詢這個月
+        monthAvailabilityKey =
+          '';
 
 
         renderCalendar();
