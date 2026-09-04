@@ -338,14 +338,111 @@
 
 
     /* =========================
-       DATE
+       CALENDAR (自製可點選月曆)
     ========================= */
 
-    .date-input {
-      appearance: auto;
-      -webkit-appearance: auto;
-      color-scheme: light;
-      width: 80%;
+    .calendar {
+      border: 1px solid #E9C99D;
+      border-radius: 14px;
+      padding: 14px;
+      background: #FFFFFF;
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .calendar-nav {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: #F1F8F3;
+      color: #3F6257;
+      font-size: 17px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calendar-nav:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .calendar-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #3F6257;
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      color: #8A8D87;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 14px;
+      font-family: inherit;
+      color: #4C514D;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .calendar-day.empty {
+      cursor: default;
+    }
+
+    .calendar-day.disabled {
+      color: #D8DAD3;
+      cursor: not-allowed;
+    }
+
+    .calendar-day.today {
+      font-weight: 800;
+      color: #6FA991;
+    }
+
+    .calendar-day.selected {
+      background: #6FA991;
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+
+    .calendar-day:not(.disabled):not(.empty):not(.selected):hover {
+      background: #F1F8F3;
+    }
+
+    .selected-date-label {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #3F6257;
+      text-align: center;
+    }
+
+    .selected-date-label strong {
+      color: #F18782;
     }
 
 
@@ -402,6 +499,19 @@
       box-shadow:
         0 4px 10px
         rgba(111, 169, 145, 0.25);
+    }
+
+    .time-button.disabled,
+    .time-button:disabled {
+      background: #F5F4EF;
+
+      border-color: #DCDCD5;
+
+      color: #B7BAB5;
+
+      cursor: not-allowed;
+
+      box-shadow: none;
     }
 
     .no-time {
@@ -842,15 +952,21 @@
 
     <div class="form-group">
 
-      <label for="date">
+      <label>
         選擇日期
       </label>
 
-      <input
-        type="date"
-        id="date"
-        class="date-input"
+      <div
+        id="calendar"
+        class="calendar"
+      ></div>
+
+      <div
+        id="selectedDateLabel"
+        class="selected-date-label"
       >
+        請點選日期
+      </div>
 
     </div>
 
@@ -954,6 +1070,10 @@
 
   let selectedTime = '';
 
+  let selectedDate = '';
+
+  let calendarViewDate = new Date();
+
   let lineUserId = '';
 
   let liffReady = false;
@@ -967,24 +1087,12 @@
     'load',
     function () {
 
-      setMinimumDate();
+      renderCalendar();
 
       initLIFF();
 
     }
   );
-
-
-  /* ==================================================
-     日期
-  ================================================== */
-
-  document
-    .getElementById('date')
-    .addEventListener(
-      'change',
-      loadTimes
-    );
 
 
   /* ==================================================
@@ -997,6 +1105,256 @@
       'click',
       submitReservation
     );
+
+
+  /* ==================================================
+     月曆
+  ================================================== */
+
+  function pad2(n) {
+
+    return String(n).padStart(2, '0');
+
+  }
+
+
+  function toDateStr(year, month, day) {
+
+    return (
+      year +
+      '-' +
+      pad2(month + 1) +
+      '-' +
+      pad2(day)
+    );
+
+  }
+
+
+  function renderCalendar() {
+
+    const container =
+      document.getElementById('calendar');
+
+
+    const year =
+      calendarViewDate.getFullYear();
+
+    const month =
+      calendarViewDate.getMonth();
+
+
+    const today =
+      new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+
+    const firstDay =
+      new Date(year, month, 1);
+
+    const startWeekday =
+      firstDay.getDay();
+
+    const daysInMonth =
+      new Date(year, month + 1, 0).getDate();
+
+
+    const isPastMonth =
+
+      year < today.getFullYear() ||
+
+      (
+        year === today.getFullYear() &&
+        month < today.getMonth()
+      );
+
+
+    let html = '';
+
+
+    html +=
+      '<div class="calendar-header">' +
+
+        '<button type="button" class="calendar-nav" id="prevMonth"' +
+          (isPastMonth ? ' disabled' : '') +
+        '>&#8249;</button>' +
+
+        '<div class="calendar-title">' +
+          year + '年' + (month + 1) + '月' +
+        '</div>' +
+
+        '<button type="button" class="calendar-nav" id="nextMonth">' +
+          '&#8250;' +
+        '</button>' +
+
+      '</div>';
+
+
+    html +=
+      '<div class="calendar-weekdays">';
+
+    ['日', '一', '二', '三', '四', '五', '六'].forEach(
+      function (w) {
+
+        html +=
+          '<div>' + w + '</div>';
+
+      }
+    );
+
+    html += '</div>';
+
+
+    html +=
+      '<div class="calendar-days">';
+
+
+    for (let i = 0; i < startWeekday; i++) {
+
+      html +=
+        '<div class="calendar-day empty"></div>';
+
+    }
+
+
+    for (let d = 1; d <= daysInMonth; d++) {
+
+      const dateObj =
+        new Date(year, month, d);
+
+      dateObj.setHours(0, 0, 0, 0);
+
+
+      const dateStr =
+        toDateStr(year, month, d);
+
+
+      const isPast =
+        dateObj < today;
+
+      const isToday =
+        dateObj.getTime() === today.getTime();
+
+      const isSelected =
+        dateStr === selectedDate;
+
+
+      let cls =
+        'calendar-day';
+
+      if (isPast) cls += ' disabled';
+
+      if (isToday) cls += ' today';
+
+      if (isSelected) cls += ' selected';
+
+
+      html +=
+
+        '<button type="button" class="' +
+          cls +
+        '" data-date="' +
+          dateStr +
+        '"' +
+        (isPast ? ' disabled' : '') +
+        '>' +
+          d +
+        '</button>';
+
+    }
+
+
+    html += '</div>';
+
+
+    container.innerHTML =
+      html;
+
+
+    document
+      .getElementById('prevMonth')
+      .addEventListener(
+        'click',
+        function () {
+
+          calendarViewDate.setMonth(
+            calendarViewDate.getMonth() - 1
+          );
+
+          renderCalendar();
+
+        }
+      );
+
+
+    document
+      .getElementById('nextMonth')
+      .addEventListener(
+        'click',
+        function () {
+
+          calendarViewDate.setMonth(
+            calendarViewDate.getMonth() + 1
+          );
+
+          renderCalendar();
+
+        }
+      );
+
+
+    container
+      .querySelectorAll(
+        '.calendar-day:not(.empty):not(.disabled)'
+      )
+      .forEach(
+        function (btn) {
+
+          btn.addEventListener(
+            'click',
+            function () {
+
+              selectedDate =
+                btn.dataset.date;
+
+              renderCalendar();
+
+              updateSelectedDateLabel();
+
+              loadTimes();
+
+            }
+          );
+
+        }
+      );
+
+  }
+
+
+  function updateSelectedDateLabel() {
+
+    const label =
+      document.getElementById(
+        'selectedDateLabel'
+      );
+
+    if (!selectedDate) {
+
+      label.innerHTML =
+        '請點選日期';
+
+      return;
+
+    }
+
+    label.innerHTML =
+      '已選擇日期：<strong>' +
+      selectedDate +
+      '</strong>';
+
+  }
 
 
   /* ==================================================
@@ -1027,13 +1385,6 @@
       console.log(
         'LIFF 初始化成功'
       );
-
-
-      /*
-       * 這裡不再用 userCodeAppPanel
-       *
-       * GitHub Pages 本身就是 LIFF Endpoint
-       */
 
 
       if (
@@ -1140,54 +1491,6 @@
 
 
   /* ==================================================
-     日期最小值
-  ================================================== */
-
-  function setMinimumDate() {
-
-    const dateInput =
-      document.getElementById(
-        'date'
-      );
-
-
-    const now =
-      new Date();
-
-
-    const year =
-      now.getFullYear();
-
-
-    const month =
-      String(
-        now.getMonth() + 1
-      ).padStart(
-        2,
-        '0'
-      );
-
-
-    const day =
-      String(
-        now.getDate()
-      ).padStart(
-        2,
-        '0'
-      );
-
-
-    dateInput.min =
-      year +
-      '-' +
-      month +
-      '-' +
-      day;
-
-  }
-
-
-  /* ==================================================
      呼叫 GAS API
   ================================================== */
 
@@ -1274,9 +1577,7 @@
 
 
     const date =
-      document
-        .getElementById('date')
-        .value;
+      selectedDate;
 
 
     const container =
@@ -1367,7 +1668,34 @@
 
 
       times.forEach(
-        function(time) {
+        function(entry) {
+
+          /*
+           * entry 可能是純字串 "18:00"
+           * 也可能是物件 { time: "18:00", available: false }
+           * 兩種格式都相容
+           */
+
+          const time =
+            typeof entry === 'string'
+              ? entry
+              : entry.time;
+
+
+          const backendAvailable =
+            typeof entry === 'string'
+              ? true
+              : (entry.available !== false);
+
+
+          const isPast =
+            isTimeInPast(date, time);
+
+
+          const isDisabled =
+            !backendAvailable ||
+            isPast;
+
 
           const button =
             document.createElement(
@@ -1380,41 +1708,51 @@
 
 
           button.className =
-            'time-button';
+            'time-button' +
+            (isDisabled ? ' disabled' : '');
 
 
           button.innerText = formatTime(time);
 
 
-          button.addEventListener(
-            'click',
-            function() {
+          if (isDisabled) {
 
-              selectedTime =
-                time;
+            button.disabled =
+              true;
+
+          } else {
+
+            button.addEventListener(
+              'click',
+              function() {
+
+                selectedTime =
+                  time;
 
 
-              document
-                .querySelectorAll(
-                  '.time-button'
-                )
-                .forEach(
-                  function(btn) {
+                document
+                  .querySelectorAll(
+                    '.time-button'
+                  )
+                  .forEach(
+                    function(btn) {
 
-                    btn.classList.remove(
-                      'selected'
-                    );
+                      btn.classList.remove(
+                        'selected'
+                      );
 
-                  }
+                    }
+                  );
+
+
+                button.classList.add(
+                  'selected'
                 );
 
+              }
+            );
 
-              button.classList.add(
-                'selected'
-              );
-
-            }
-          );
+          }
 
 
           container.appendChild(
@@ -1446,27 +1784,91 @@
 
   }
 
-function formatTime(value) {
+  function formatTime(value) {
 
-  if (!value) {
-    return '';
+    if (!value) {
+      return '';
+    }
+
+    const text = String(value).trim();
+
+    const match = text.match(/(\d{1,2}):(\d{2})/);
+
+    if (match) {
+      return (
+        String(Number(match[1])).padStart(2, '0') +
+        ':' +
+        match[2]
+      );
+    }
+
+    return text;
   }
 
-  const text = String(value).trim();
 
-  // 已經是 18:00
-  const match = text.match(/(\d{1,2}):(\d{2})/);
+  /* ==================================================
+     判斷該時段是否已經過去（只影響選「今天」時）
+  ================================================== */
 
-  if (match) {
-    return (
-      String(Number(match[1])).padStart(2, '0') +
-      ':' +
-      match[2]
-    );
+  function isTimeInPast(dateStr, timeStr) {
+
+    if (!dateStr || !timeStr) {
+      return false;
+    }
+
+
+    const now =
+      new Date();
+
+
+    const todayStr =
+      toDateStr(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+      );
+
+
+    /*
+     * 只有選到「今天」才需要比對時間
+     * 未來日期一律視為可預約
+     */
+
+    if (dateStr !== todayStr) {
+      return false;
+    }
+
+
+    const match =
+      String(timeStr).match(/(\d{1,2}):(\d{2})/);
+
+    if (!match) {
+      return false;
+    }
+
+
+    const slotHour =
+      Number(match[1]);
+
+    const slotMinute =
+      Number(match[2]);
+
+
+    const slotDate =
+      new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        slotHour,
+        slotMinute
+      );
+
+
+    return slotDate <= now;
+
   }
 
-  return text;
-}
+
   /* ==================================================
      建立預約
   ================================================== */
@@ -1474,9 +1876,7 @@ function formatTime(value) {
   async function submitReservation() {
 
     const date =
-      document
-        .getElementById('date')
-        .value;
+      selectedDate;
 
 
     const name =
@@ -1629,45 +2029,45 @@ function formatTime(value) {
       ) {
 
       message.innerHTML =
-      
+
           '<div class="success">' +
-      
+
             '<div class="success-title">' +
               '🎉 預約成功！' +
             '</div>' +
-      
+
             '<div class="reservation-id">' +
               escapeHtml(result.reservationId || '') +
             '</div>' +
-      
+
             '<div class="success-info">' +
-      
+
               successRow(
                 '日期',
                 result.date || ''
               ) +
-      
+
               successRow(
                 '時間',
                 formatTime(result.time)
               ) +
-      
+
               successRow(
                 '服務',
                 result.service || ''
               ) +
-      
+
               successRow(
                 '價格',
                 '$' + (result.price || '')
               ) +
-      
+
             '</div>' +
-      
+
             '<div class="success-notice">' +
               '預約確認通知已傳送至您的 LINE。' +
             '</div>' +
-      
+
           '</div>';
 
 
@@ -1675,10 +2075,18 @@ function formatTime(value) {
           '';
 
 
-        document
-          .getElementById('date')
-          .value =
+        selectedDate =
           '';
+
+
+        calendarViewDate =
+          new Date();
+
+
+        renderCalendar();
+
+
+        updateSelectedDateLabel();
 
 
         document
@@ -1763,48 +2171,22 @@ function formatTime(value) {
   ================================================== */
 
   function successRow(label, value) {
-  
+
     return (
       '<div class="success-row">' +
-  
+
         '<div class="success-label">' +
           escapeHtml(label) +
         '</div>' +
-  
+
         '<div class="success-value">' +
           escapeHtml(value) +
         '</div>' +
-  
+
       '</div>'
     );
-  
-  }
-  
-  
-  function formatTime(value) {
-  
-    if (!value) {
-      return '';
-    }
-  
-    const text = String(value).trim();
-  
-    const match =
-      text.match(/(\d{1,2}):(\d{2})/);
-  
-    if (match) {
-  
-      return (
-        String(Number(match[1])).padStart(2, '0') +
-        ':' +
-        match[2]
-      );
-  
-    }
-  
-    return text;
-  }
 
+  }
 
 
   /* ==================================================
