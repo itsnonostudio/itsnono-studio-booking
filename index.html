@@ -1193,7 +1193,12 @@
 
   let monthAvailabilityFailed = false;
 
+  // lineUserId 僅用於畫面顯示，不會傳給後端當作身分依據
   let lineUserId = '';
+
+  // idToken 才是後端會拿去跟 LINE 官方驗證身分的依據，
+  // 需要 LIFF App 的 Scope 有勾選 openid 才拿得到值
+  let lineIdToken = '';
 
   let liffReady = false;
 
@@ -1635,6 +1640,10 @@
 
   /* ==================================================
      LIFF
+     注意：LIFF App 的 Scope 除了 profile，
+     還要多勾選 openid，liff.getIDToken() 才拿得到值。
+     若 idToken 一直是空的，先去 LINE Developers Console
+     檢查這個 LIFF App 的 Scope 設定。
   ================================================== */
 
   async function initLIFF() {
@@ -1708,6 +1717,19 @@
 
       lineUserId =
         profile.userId;
+
+
+      lineIdToken =
+        liff.getIDToken();
+
+
+      if (!lineIdToken) {
+
+        console.warn(
+          '拿不到 idToken，請確認 LIFF App 的 Scope 是否有勾選 openid'
+        );
+
+      }
 
 
       liffReady =
@@ -2283,8 +2305,10 @@
       phone:
         phone,
 
-      lineUserId:
-        lineUserId
+      // 不再傳未經驗證的 lineUserId，改傳 idToken，
+      // 後端會用這個向 LINE 官方換回「真正、無法偽造」的 userId
+      idToken:
+        lineIdToken
 
     };
 
@@ -2481,6 +2505,34 @@
         result &&
         result.success
       ) {
+
+        // 用免費的 liff.sendMessages() 把確認訊息送進聊天室，
+        // 不會計入 Messaging API 的 Push 額度。
+        // 需要 LIFF App 的 Scope 有勾選 chat_message.write，
+        // 且必須是從 LINE 內的聊天室情境開啟才會成功，
+        // 失敗也不影響預約已經成立這件事，所以只記錄不擋流程。
+        if (
+          result.notificationMessage &&
+          liff.isInClient()
+        ) {
+
+          try {
+
+            await liff.sendMessages(
+              [ result.notificationMessage ]
+            );
+
+          } catch (sendError) {
+
+            console.warn(
+              'sendMessages 失敗（不影響預約結果）:',
+              sendError
+            );
+
+          }
+
+        }
+
 
         renderSuccessMessage(
           result
