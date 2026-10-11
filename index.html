@@ -17,7 +17,6 @@
 
   <title>ITSNONO_STUDIO｜線上預約</title>
 
-
   <style>
 
     *,
@@ -34,26 +33,16 @@
     body {
       margin: 0;
       min-height: 100vh;
-
-      background:
-        linear-gradient(
-          180deg,
-          #FFF8E9 0%,
-          #FFF9EE 100%
-        );
-
+      background: #FFF8E9;
       color: #4C514D;
-
       font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Noto Sans TC",
         "Microsoft JhengHei",
         sans-serif;
-
       -webkit-font-smoothing: antialiased;
     }
-
 
     /* =========================
        HEADER
@@ -61,101 +50,72 @@
 
     .header {
       width: 100%;
-
       background:
         linear-gradient(
           135deg,
           #6FA991 0%,
           #629D85 100%
         );
-
       color: #FFFFFF;
-
       padding:
         max(28px, env(safe-area-inset-top))
         24px
         32px;
-
       position: relative;
       overflow: hidden;
     }
 
     .header::before {
       content: "";
-
       position: absolute;
-
       width: 180px;
       height: 180px;
-
       right: -70px;
       top: -90px;
-
       border-radius: 50%;
-
-      background:
-        rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .header::after {
       content: "";
-
       position: absolute;
-
       width: 120px;
       height: 120px;
-
       left: -70px;
       bottom: -80px;
-
       border-radius: 50%;
-
-      background:
-        rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .header-inner {
       position: relative;
       z-index: 2;
-
       width: 100%;
       max-width: 780px;
-
       margin: 0 auto;
     }
 
     .header-small {
       color: #FFF0CE;
-
       font-size: 12px;
       font-weight: 700;
-
       letter-spacing: 1.5px;
     }
 
     .header-title {
       margin-top: 7px;
-
-      font-size:
-        clamp(25px, 5vw, 32px);
-
+      font-size: clamp(25px, 5vw, 32px);
       line-height: 1.25;
-
       font-weight: 800;
-
       letter-spacing: 1px;
     }
 
     .header-sub {
       margin-top: 7px;
-
       color: #EAF4EC;
-
       font-size: 12px;
-
       letter-spacing: 1.5px;
     }
-
 
     /* =========================
        CONTAINER
@@ -164,14 +124,11 @@
     .container {
       width: 100%;
       max-width: 780px;
-
       margin: 0 auto;
-
       padding:
         24px 18px
         calc(40px + env(safe-area-inset-bottom));
     }
-
 
     /* =========================
        CARD
@@ -179,59 +136,36 @@
 
     .booking-card {
       background: #FFFFFF;
-
-      border:
-        1px solid rgba(233, 201, 157, 0.75);
-
+      border: 1px solid rgba(233, 201, 157, 0.75);
       border-radius: 18px;
-
-      padding:
-        22px 18px 24px;
-
-      box-shadow:
-        0 8px 30px
-        rgba(63, 98, 87, 0.08);
+      padding: 22px 18px 24px;
+      box-shadow: 0 8px 30px rgba(63, 98, 87, 0.08);
     }
-
 
     .section-title {
       display: flex;
-
       align-items: center;
-
       gap: 10px;
-
       color: #3F6257;
-
       font-size: 20px;
-
       font-weight: 800;
-
       margin-bottom: 4px;
     }
 
     .section-title::before {
       content: "";
-
       width: 5px;
       height: 23px;
-
       border-radius: 10px;
-
       background: #F18782;
     }
 
     .section-description {
-      margin:
-        0 0 22px 15px;
-
+      margin: 0 0 22px 15px;
       color: #8A8D87;
-
       font-size: 13px;
-
       line-height: 1.6;
     }
-
 
     /* =========================
        FORM
@@ -247,58 +181,37 @@
 
     label {
       display: block;
-
       margin-bottom: 8px;
-
       color: #71847B;
-
       font-size: 14px;
-
       font-weight: 600;
     }
 
     select,
     input {
       display: block;
-
       width: 100%;
-
       min-height: 48px;
-
-      padding:
-        12px 14px;
-
-      border:
-        1px solid #E9C99D;
-
+      padding: 12px 14px;
+      border: 1px solid #E9C99D;
       border-radius: 10px;
-
       background: #FFFFFF;
-
       font-family: inherit;
-
       font-size: 16px;
-
       color: #4C514D;
-
       outline: none;
     }
 
     select:focus,
     input:focus {
       border-color: #6FA991;
-
       background: #FBFFFC;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(111, 169, 145, 0.15);
+      box-shadow: 0 0 0 3px rgba(111, 169, 145, 0.15);
     }
 
     input::placeholder {
       color: #B7BAB5;
     }
-
 
     /* =========================
        SELECT
@@ -309,13 +222,11 @@
       -webkit-appearance: none;
 
       background-image:
-
         linear-gradient(
           45deg,
           transparent 50%,
           #6FA991 50%
         ),
-
         linear-gradient(
           135deg,
           #6FA991 50%,
@@ -323,22 +234,16 @@
         );
 
       background-position:
-
         calc(100% - 18px) 21px,
         calc(100% - 12px) 21px;
 
-      background-size:
-        6px 6px,
-        6px 6px;
-
+      background-size: 6px 6px, 6px 6px;
       background-repeat: no-repeat;
-
       padding-right: 40px;
     }
 
-
     /* =========================
-       CALENDAR (自製可點選月曆)
+       CALENDAR
     ========================= */
 
     .calendar {
@@ -445,7 +350,6 @@
       color: #F18782;
     }
 
-
     /* =========================
        TIME
     ========================= */
@@ -456,83 +360,50 @@
 
     .times {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 9px;
     }
 
     .time-button {
       width: 100%;
-
       min-height: 48px;
-
-      border:
-        1px solid #6FA991;
-
+      border: 1px solid #6FA991;
       background: #FFFFFF;
-
       color: #3F6257;
-
       border-radius: 10px;
-
-      padding:
-        11px 5px;
-
+      padding: 11px 5px;
       font-family: inherit;
-
       font-size: 15px;
-
       font-weight: 600;
-
       cursor: pointer;
     }
 
     .time-button.selected {
       background: #6FA991;
-
       border-color: #6FA991;
-
       color: #FFFFFF;
-
-      box-shadow:
-        0 4px 10px
-        rgba(111, 169, 145, 0.25);
+      box-shadow: 0 4px 10px rgba(111, 169, 145, 0.25);
     }
 
     .time-button.disabled,
     .time-button:disabled {
       background: #F5F4EF;
-
       border-color: #DCDCD5;
-
       color: #B7BAB5;
-
       cursor: not-allowed;
-
       box-shadow: none;
     }
 
     .no-time {
       grid-column: 1 / -1;
-
-      padding:
-        15px 10px;
-
+      padding: 15px 10px;
       border-radius: 10px;
-
       background: #FAF8F2;
-
       color: #8A8D87;
-
       font-size: 14px;
-
       line-height: 1.6;
-
       text-align: center;
     }
-
 
     /* =========================
        SUBMIT
@@ -540,18 +411,11 @@
 
     .submit {
       display: block;
-
       width: 100%;
-
       min-height: 52px;
-
       margin-top: 28px;
-
-      padding:
-        14px 18px;
-
+      padding: 14px 18px;
       border: none;
-
       border-radius: 11px;
 
       background:
@@ -562,91 +426,71 @@
         );
 
       color: #FFFFFF;
-
       font-family: inherit;
-
       font-size: 17px;
-
       font-weight: 800;
-
       letter-spacing: 1px;
-
       cursor: pointer;
+      box-shadow: 0 6px 15px rgba(241, 135, 130, 0.22);
+    }
 
-      box-shadow:
-        0 6px 15px
-        rgba(241, 135, 130, 0.22);
+    .submit:hover {
+      background:
+        linear-gradient(
+          135deg,
+          #E97D78 0%,
+          #D96F6A 100%
+        );
     }
 
     .submit:disabled {
       opacity: .55;
-
       cursor: not-allowed;
-
       box-shadow: none;
     }
 
-
     /* =========================
-       DEPOSIT PANEL（新客訂金）
+       DEPOSIT PANEL
     ========================= */
 
     .deposit-panel {
       margin-top: 24px;
-
       padding: 18px 16px 20px;
-
       border-radius: 14px;
-
       background: #FFFDF8;
-
       border: 1px solid #E9C99D;
     }
 
     .deposit-title {
       color: #3F6257;
-
       font-size: 17px;
-
       font-weight: 800;
-
       margin-bottom: 10px;
     }
 
     .deposit-rules {
       color: #71847B;
-
       font-size: 13px;
-
       line-height: 1.8;
-
       margin-bottom: 14px;
     }
 
     .deposit-account {
       padding: 12px 14px;
-
       border-radius: 10px;
-
       background: #F1F8F3;
-
       color: #3F6257;
-
       font-size: 14px;
-
       margin-bottom: 6px;
-
       text-align: center;
+      border: 1px solid #F0E5D4;
     }
 
     .deposit-account strong {
       color: #F18782;
-
       font-size: 16px;
-
       letter-spacing: 1px;
     }
-
 
     /* =========================
        MESSAGE
@@ -654,81 +498,49 @@
 
     .message {
       margin-top: 18px;
-
       color: #3F6257;
-
       line-height: 1.8;
-
       font-size: 14px;
     }
 
-
     .success {
-      padding:
-        20px 18px;
-
+      padding: 20px 18px;
       margin-top: 0;
-
       border-radius: 13px;
-
       background: #FFFDF8;
-
-      border:
-        1px solid #E9C99D;
-
-      box-shadow:
-        0 4px 14px
-        rgba(76, 81, 77, 0.05);
+      border: 1px solid #E9C99D;
+      box-shadow: 0 4px 14px rgba(76, 81, 77, 0.05);
     }
 
     .success-title {
       color: #3F6257;
-
       font-size: 20px;
-
       font-weight: 800;
-
       text-align: center;
-
       margin-bottom: 12px;
     }
 
     .reservation-id {
       display: block;
-
       width: 100%;
-
       color: #F18782;
-
       font-size: 18px;
-
       font-weight: 800;
-
       text-align: center;
-
-      margin:
-        5px 0 18px;
+      margin: 5px 0 18px;
     }
 
     .success-info {
       padding: 14px;
-
       border-radius: 10px;
-
       background: #FFFFFF;
-
-      border:
-        1px solid #F0E5D4;
+      border: 1px solid #F0E5D4;
     }
 
     .success-row {
       padding: 8px 0;
-
-      border-bottom:
-        1px solid #F1ECE3;
-
+      border-bottom: 1px solid #F1ECE3;
       font-size: 14px;
-
       line-height: 1.6;
     }
 
@@ -738,36 +550,25 @@
 
     .success-label {
       color: #8A8D87;
-
       font-size: 12px;
-
       margin-bottom: 2px;
     }
 
     .success-value {
       color: #4C514D;
-
       font-weight: 600;
     }
 
     .success-notice {
       margin-top: 15px;
-
       padding: 12px;
-
       border-radius: 9px;
-
       background: #F1F8F3;
-
       color: #3F6257;
-
       text-align: center;
-
       font-size: 13px;
-
       line-height: 1.7;
     }
-
 
     /* =========================
        LINE STATUS
@@ -775,16 +576,10 @@
 
     .line-status {
       margin-top: 13px;
-
-      padding:
-        0 5px;
-
+      padding: 0 5px;
       font-size: 12px;
-
       color: #71847B;
-
       text-align: center;
-
       line-height: 1.6;
     }
 
@@ -796,31 +591,23 @@
       color: #D66F69;
     }
 
-
     /* =========================
        LOADING
     ========================= */
 
     .loading {
       display: inline-flex;
-
       align-items: center;
-
       justify-content: center;
-
       gap: 7px;
     }
 
     .loading-dot {
       width: 6px;
       height: 6px;
-
       border-radius: 50%;
-
       background: #6FA991;
-
-      animation:
-        loading 1s infinite ease-in-out;
+      animation: loading 1s infinite ease-in-out;
     }
 
     .loading-dot:nth-child(2) {
@@ -832,7 +619,6 @@
     }
 
     @keyframes loading {
-
       0%,
       60%,
       100% {
@@ -844,53 +630,41 @@
         opacity: 1;
         transform: translateY(-3px);
       }
-
     }
-
 
     @media (min-width: 600px) {
 
       .header {
-        padding:
-          36px 32px;
+        padding: 36px 32px;
       }
 
       .container {
-        padding:
-          34px 24px 50px;
+        padding: 34px 24px 50px;
       }
 
       .booking-card {
-        padding:
-          30px;
+        padding: 30px;
       }
 
       .times {
-        grid-template-columns:
-          repeat(4, minmax(0, 1fr));
-
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 10px;
       }
 
     }
 
-
     @media (min-width: 900px) {
 
       .header {
-        padding:
-          38px 30px;
+        padding: 38px 30px;
       }
 
       .container {
-        padding:
-          45px 30px 70px;
+        padding: 45px 30px 70px;
       }
 
       .booking-card {
-        padding:
-          34px;
-
+        padding: 34px;
         border-radius: 20px;
       }
 
@@ -899,20 +673,16 @@
       }
 
       .times {
-        grid-template-columns:
-          repeat(4, minmax(0, 1fr));
-
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 11px;
       }
 
       .submit {
         min-height: 56px;
-
         font-size: 18px;
       }
 
     }
-
 
     @media (max-width: 359px) {
 
@@ -922,14 +692,11 @@
       }
 
       .container {
-        padding:
-          18px 12px 35px;
+        padding: 18px 12px 35px;
       }
 
       .booking-card {
-        padding:
-          18px 14px 20px;
-
+        padding: 18px 14px 20px;
         border-radius: 15px;
       }
 
@@ -943,7 +710,6 @@
 
       .time-button {
         min-height: 45px;
-
         font-size: 14px;
       }
 
@@ -953,9 +719,7 @@
 
 </head>
 
-
 <body>
-
 
 <header class="header">
 
@@ -977,7 +741,6 @@
 
 </header>
 
-
 <main class="container">
 
   <section class="booking-card">
@@ -989,7 +752,6 @@
     <div class="section-description">
       請選擇服務、日期與方便的時間，我們會為您保留預約。首次預約需支付訂金 $500。
     </div>
-
 
     <div class="form-group">
 
@@ -1009,7 +771,6 @@
       </select>
 
     </div>
-
 
     <div class="form-group">
 
@@ -1031,7 +792,6 @@
 
     </div>
 
-
     <div class="time-wrapper">
 
       <label>
@@ -1051,7 +811,6 @@
 
     </div>
 
-
     <div class="form-group">
 
       <label for="name">
@@ -1066,7 +825,6 @@
       >
 
     </div>
-
 
     <div class="form-group">
 
@@ -1084,7 +842,6 @@
 
     </div>
 
-
     <button
       id="submitButton"
       class="submit"
@@ -1092,7 +849,6 @@
     >
       確認預約
     </button>
-
 
     <!--
       新客訂金說明區塊，預設隱藏。
@@ -1145,12 +901,10 @@
 
     </div>
 
-
     <div
       id="message"
       class="message"
     ></div>
-
 
     <div
       id="lineStatus"
@@ -1162,7 +916,6 @@
   </section>
 
 </main>
-
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -1192,31 +945,50 @@
   // lineUserId 僅用於畫面顯示，不會傳給後端當作身分依據
   let lineUserId = '';
 
-  // idToken 才是後端會拿去跟 LINE 官方驗證身分的依據，
-  // 需要 LIFF App 的 Scope 有勾選 openid 才拿得到值
+  // idToken 才是後端會拿去跟 LINE 官方驗證身分的依據
   let lineIdToken = '';
 
   let liffReady = false;
 
-  // 暫存「還沒送出」的預約資料，等使用者填完訂金後五碼再一起送出
+  // 暫存尚未送出的預約資料，等使用者填完訂金後五碼再一起送出
   let pendingReservationData = null;
 
+  let serviceDisabled = false;
 
   /* ==================================================
      初始化
   ================================================== */
 
-  window.addEventListener(
-    'load',
-    function () {
+  window.addEventListener('load', function () {
 
-      renderCalendar();
+    renderCalendar();
+    initLIFF();
+    checkServiceStatus();
 
-      initLIFF();
+  });
+
+  async function checkServiceStatus() {
+
+    try {
+
+      const result = await callGAS('checkStatus', {});
+
+      if (result && result.success && result.active === false) {
+
+        serviceDisabled = true;
+        showServiceDisabledOverlay();
+
+      }
+
+    } catch (error) {
+
+      console.error('checkServiceStatus ERROR:', error);
+
+      // 查詢失敗不顯示暫停畫面，避免網路問題影響正常客戶
 
     }
-  );
 
+  }
 
   /* ==================================================
      按鈕事件
@@ -1224,19 +996,11 @@
 
   document
     .getElementById('submitButton')
-    .addEventListener(
-      'click',
-      submitReservation
-    );
-
+    .addEventListener('click', submitReservation);
 
   document
     .getElementById('depositConfirmButton')
-    .addEventListener(
-      'click',
-      confirmDepositAndSubmit
-    );
-
+    .addEventListener('click', confirmDepositAndSubmit);
 
   /* ==================================================
      月曆
@@ -1247,7 +1011,6 @@
     return String(n).padStart(2, '0');
 
   }
-
 
   function toDateStr(year, month, day) {
 
@@ -1261,7 +1024,6 @@
 
   }
 
-
   function toYearMonthStr(year, month) {
 
     return (
@@ -1272,152 +1034,87 @@
 
   }
 
-
   async function ensureMonthAvailability(year, month) {
 
-    const key =
-      toYearMonthStr(year, month);
-
+    const key = toYearMonthStr(year, month);
 
     if (key === monthAvailabilityKey) {
-
       return;
-
     }
-
 
     try {
 
-      const result =
-        await callGAS(
-          'getAvailableDatesInMonth',
-          {
-            yearMonth:
-              key
-          }
-        );
+      const result = await callGAS(
+        'getAvailableDatesInMonth',
+        { yearMonth: key }
+      );
 
+      if (result && result.success) {
 
-      if (
-        result &&
-        result.success
-      ) {
-
-        monthAvailability =
-          result.dates || {};
-
-        monthAvailabilityFailed =
-          false;
+        monthAvailability = result.dates || {};
+        monthAvailabilityFailed = false;
 
       } else {
 
         monthAvailability = {};
-
-        monthAvailabilityFailed =
-          true;
+        monthAvailabilityFailed = true;
 
       }
 
-
     } catch (error) {
 
-      console.error(
-        'ensureMonthAvailability ERROR:',
-        error
-      );
-
+      console.error('ensureMonthAvailability ERROR:', error);
 
       monthAvailability = {};
-
-      monthAvailabilityFailed =
-        true;
+      monthAvailabilityFailed = true;
 
     }
 
-
-    monthAvailabilityKey =
-      key;
+    monthAvailabilityKey = key;
 
   }
 
-
   async function renderCalendar() {
 
-    const container =
-      document.getElementById('calendar');
+    const container = document.getElementById('calendar');
 
+    const year = calendarViewDate.getFullYear();
+    const month = calendarViewDate.getMonth();
 
-    const year =
-      calendarViewDate.getFullYear();
-
-    const month =
-      calendarViewDate.getMonth();
-
-
-    if (
-      toYearMonthStr(year, month) !== monthAvailabilityKey
-    ) {
+    if (toYearMonthStr(year, month) !== monthAvailabilityKey) {
 
       container.innerHTML =
 
         '<div class="no-time">' +
-
           '<span class="loading">' +
-
             '<span class="loading-dot"></span>' +
-
             '<span class="loading-dot"></span>' +
-
             '<span class="loading-dot"></span>' +
-
             '讀取可預約日期' +
-
           '</span>' +
-
         '</div>';
 
     }
 
-
-    await ensureMonthAvailability(
-      year,
-      month
-    );
-
+    await ensureMonthAvailability(year, month);
 
     renderCalendarGrid();
 
   }
 
-
   function renderCalendarGrid() {
 
-    const container =
-      document.getElementById('calendar');
+    const container = document.getElementById('calendar');
 
+    const year = calendarViewDate.getFullYear();
+    const month = calendarViewDate.getMonth();
 
-    const year =
-      calendarViewDate.getFullYear();
-
-    const month =
-      calendarViewDate.getMonth();
-
-
-    const today =
-      new Date();
-
+    const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-
-    const firstDay =
-      new Date(year, month, 1);
-
-    const startWeekday =
-      firstDay.getDay();
-
-    const daysInMonth =
-      new Date(year, month + 1, 0).getDate();
-
+    const firstDay = new Date(year, month, 1);
+    const startWeekday = firstDay.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     const isPastMonth =
 
@@ -1428,11 +1125,10 @@
         month < today.getMonth()
       );
 
-
     let html = '';
 
-
     html +=
+
       '<div class="calendar-header">' +
 
         '<button type="button" class="calendar-nav" id="prevMonth"' +
@@ -1449,83 +1145,51 @@
 
       '</div>';
 
-
-    html +=
-      '<div class="calendar-weekdays">';
+    html += '<div class="calendar-weekdays">';
 
     ['日', '一', '二', '三', '四', '五', '六'].forEach(
       function (w) {
 
-        html +=
-          '<div>' + w + '</div>';
+        html += '<div>' + w + '</div>';
 
       }
     );
 
     html += '</div>';
-
-
-    html +=
-      '<div class="calendar-days">';
-
+    html += '<div class="calendar-days">';
 
     for (let i = 0; i < startWeekday; i++) {
 
-      html +=
-        '<div class="calendar-day empty"></div>';
+      html += '<div class="calendar-day empty"></div>';
 
     }
 
-
     for (let d = 1; d <= daysInMonth; d++) {
 
-      const dateObj =
-        new Date(year, month, d);
-
+      const dateObj = new Date(year, month, d);
       dateObj.setHours(0, 0, 0, 0);
 
+      const dateStr = toDateStr(year, month, d);
 
-      const dateStr =
-        toDateStr(year, month, d);
-
-
-      const isPast =
-        dateObj < today;
-
-      const isToday =
-        dateObj.getTime() === today.getTime();
-
-      const isSelected =
-        dateStr === selectedDate;
-
+      const isPast = dateObj < today;
+      const isToday = dateObj.getTime() === today.getTime();
+      const isSelected = dateStr === selectedDate;
 
       const hasAvailability =
-        Object.prototype.hasOwnProperty.call(
-          monthAvailability,
-          dateStr
-        )
+        Object.prototype.hasOwnProperty.call(monthAvailability, dateStr)
           ? monthAvailability[dateStr]
           : false;
 
       const isUnavailable =
-        monthAvailabilityFailed
-          ? false
-          : !hasAvailability;
+        monthAvailabilityFailed ? true : !hasAvailability;
 
+      const isDisabled = isPast || isUnavailable;
 
-      const isDisabled =
-        isPast || isUnavailable;
-
-
-      let cls =
-        'calendar-day';
+      let cls = 'calendar-day';
 
       if (isDisabled) cls += ' disabled';
-
       if (isToday) cls += ' today';
-
       if (isSelected) cls += ' selected';
-
 
       html +=
 
@@ -1541,87 +1205,59 @@
 
     }
 
-
     html += '</div>';
 
-
-    container.innerHTML =
-      html;
-
+    container.innerHTML = html;
 
     document
       .getElementById('prevMonth')
-      .addEventListener(
-        'click',
-        function () {
+      .addEventListener('click', function () {
 
-          calendarViewDate.setMonth(
-            calendarViewDate.getMonth() - 1
-          );
+        calendarViewDate.setMonth(
+          calendarViewDate.getMonth() - 1
+        );
 
-          renderCalendar();
+        renderCalendar();
 
-        }
-      );
-
+      });
 
     document
       .getElementById('nextMonth')
-      .addEventListener(
-        'click',
-        function () {
+      .addEventListener('click', function () {
 
-          calendarViewDate.setMonth(
-            calendarViewDate.getMonth() + 1
-          );
+        calendarViewDate.setMonth(
+          calendarViewDate.getMonth() + 1
+        );
 
-          renderCalendar();
+        renderCalendar();
 
-        }
-      );
-
+      });
 
     container
-      .querySelectorAll(
-        '.calendar-day:not(.empty):not(.disabled)'
-      )
-      .forEach(
-        function (btn) {
+      .querySelectorAll('.calendar-day:not(.empty):not(.disabled)')
+      .forEach(function (btn) {
 
-          btn.addEventListener(
-            'click',
-            function () {
+        btn.addEventListener('click', function () {
 
-              selectedDate =
-                btn.dataset.date;
+          selectedDate = btn.dataset.date;
 
-              renderCalendarGrid();
+          renderCalendarGrid();
+          updateSelectedDateLabel();
+          loadTimes();
 
-              updateSelectedDateLabel();
+        });
 
-              loadTimes();
-
-            }
-          );
-
-        }
-      );
+      });
 
   }
 
-
   function updateSelectedDateLabel() {
 
-    const label =
-      document.getElementById(
-        'selectedDateLabel'
-      );
+    const label = document.getElementById('selectedDateLabel');
 
     if (!selectedDate) {
 
-      label.innerHTML =
-        '請點選日期';
-
+      label.innerHTML = '請點選日期';
       return;
 
     }
@@ -1633,91 +1269,46 @@
 
   }
 
-
   /* ==================================================
      LIFF
-     注意：LIFF App 的 Scope 除了 profile，
-     還要多勾選 openid，liff.getIDToken() 才拿得到值。
-     若 idToken 一直是空的，先去 LINE Developers Console
-     檢查這個 LIFF App 的 Scope 設定。
   ================================================== */
 
   async function initLIFF() {
 
-    const status =
-      document.getElementById(
-        'lineStatus'
-      );
+    const status = document.getElementById('lineStatus');
 
     try {
 
-      status.innerText =
-        'LINE 初始化中...';
-
+      status.innerText = 'LINE 初始化中...';
 
       await liff.init({
-
-        liffId:
-          CONFIG.LIFF_ID
-
+        liffId: CONFIG.LIFF_ID
       });
 
+      console.log('LIFF 初始化成功');
 
-      console.log(
-        'LIFF 初始化成功'
-      );
+      if (!liff.isLoggedIn()) {
 
-
-      if (
-        !liff.isLoggedIn()
-      ) {
-
-        status.innerText =
-          'LINE 登入中...';
-
+        status.innerText = 'LINE 登入中...';
 
         liff.login({
-
-          redirectUri:
-            window.location.href
-
+          redirectUri: window.location.href
         });
-
 
         return;
 
       }
 
+      const profile = await liff.getProfile();
 
-      const profile =
-        await liff.getProfile();
+      console.log('LINE PROFILE:', profile);
 
-
-      console.log(
-        'LINE PROFILE:',
-        profile
-      );
-
-
-      if (
-        !profile ||
-        !profile.userId
-      ) {
-
-        throw new Error(
-          '無法取得 LINE User ID'
-        );
-
+      if (!profile || !profile.userId) {
+        throw new Error('無法取得 LINE User ID');
       }
 
-
-      lineUserId =
-        profile.userId;
-
-
-      lineIdToken =
-        liff.getIDToken();
-
+      lineUserId = profile.userId;
+      lineIdToken = liff.getIDToken();
 
       if (!lineIdToken) {
 
@@ -1727,62 +1318,35 @@
 
       }
 
+      liffReady = true;
 
-      liffReady =
-        true;
-
-
-      status.innerText =
-        '✓ LINE 已連線';
-
-
-      status.classList.add(
-        'success-status'
-      );
-
+      status.innerText = '✓ LINE 已連線';
+      status.classList.add('success-status');
 
     } catch (error) {
 
-      console.error(
-        'LIFF ERROR:',
-        error
-      );
+      console.error('LIFF ERROR:', error);
 
+      status.innerText = 'LINE 初始化失敗';
+      status.classList.add('error-status');
 
-      status.innerText =
-        'LINE 初始化失敗';
+      document.getElementById('message').innerHTML =
 
+        '<div class="success">' +
 
-      status.classList.add(
-        'error-status'
-      );
+          '<div class="success-title">' +
+            'LINE 連線異常' +
+          '</div>' +
 
+          '<div class="success-notice">' +
+            escapeHtml(error.message || String(error)) +
+          '</div>' +
 
-      document
-        .getElementById('message')
-        .innerHTML =
-
-          '<div class="success">' +
-
-            '<div class="success-title">' +
-              'LINE 連線異常' +
-            '</div>' +
-
-            '<div class="success-notice">' +
-
-              escapeHtml(
-                error.message ||
-                String(error)
-              ) +
-
-            '</div>' +
-
-          '</div>';
+        '</div>';
 
     }
 
   }
-
 
   /* ==================================================
      呼叫 GAS API
@@ -1790,75 +1354,43 @@
 
   async function callGAS(action, data) {
 
-    const response =
-      await fetch(
-        CONFIG.GAS_ENDPOINT,
-        {
-
-          method: 'POST',
-
-          headers: {
-
-            'Content-Type':
-              'text/plain;charset=utf-8'
-
-          },
-
-          body:
-            JSON.stringify({
-
-              action:
-                action,
-
-              data:
-                data || {}
-
-            })
-
-        }
-      );
-
+    const response = await fetch(
+      CONFIG.GAS_ENDPOINT,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify({
+          action: action,
+          data: data || {}
+        })
+      }
+    );
 
     if (!response.ok) {
-
-      throw new Error(
-        'GAS API HTTP ' +
-        response.status
-      );
-
+      throw new Error('GAS API HTTP ' + response.status);
     }
 
-
-    const text =
-      await response.text();
-
+    const text = await response.text();
 
     let result;
 
-
     try {
 
-      result =
-        JSON.parse(text);
+      result = JSON.parse(text);
 
     } catch (error) {
 
-      console.error(
-        'GAS 回傳內容:',
-        text
-      );
+      console.error('GAS 回傳內容:', text);
 
-      throw new Error(
-        'GAS 回傳不是有效 JSON'
-      );
+      throw new Error('GAS 回傳不是有效 JSON');
 
     }
-
 
     return result;
 
   }
-
 
   /* ==================================================
      取得可預約時間
@@ -1866,206 +1398,126 @@
 
   async function loadTimes() {
 
-    selectedTime =
-      '';
+    selectedTime = '';
 
-
-    const date =
-      selectedDate;
-
-
-    const container =
-      document
-        .getElementById('times');
-
+    const date = selectedDate;
+    const container = document.getElementById('times');
 
     if (!date) {
 
       container.innerHTML =
-
-        '<div class="no-time">' +
-          '請先選擇日期' +
-        '</div>';
+        '<div class="no-time">請先選擇日期</div>';
 
       return;
 
     }
-
 
     container.innerHTML =
 
       '<div class="no-time">' +
 
         '<span class="loading">' +
-
           '<span class="loading-dot"></span>' +
-
           '<span class="loading-dot"></span>' +
-
           '<span class="loading-dot"></span>' +
-
           '讀取可預約時段' +
-
         '</span>' +
 
       '</div>';
 
-
     try {
 
-      const result =
-        await callGAS(
-          'getAvailableTimes',
-          {
-            date:
-              date
-          }
-        );
+      const result = await callGAS(
+        'getAvailableTimes',
+        { date: date }
+      );
 
-
-      if (
-        !result ||
-        !result.success
-      ) {
+      if (!result || !result.success) {
 
         throw new Error(
-          result &&
-          result.message
+          result && result.message
             ? result.message
             : '讀取時段失敗'
         );
 
       }
 
+      const times = result.times || [];
 
-      const times =
-        result.times || [];
+      container.innerHTML = '';
 
-
-      container.innerHTML =
-        '';
-
-
-      if (
-        times.length === 0
-      ) {
+      if (times.length === 0) {
 
         container.innerHTML =
-
-          '<div class="no-time">' +
-            '這天沒有可預約時段' +
-          '</div>';
+          '<div class="no-time">這天沒有可預約時段</div>';
 
         return;
 
       }
 
+      times.forEach(function (entry) {
 
-      times.forEach(
-        function(entry) {
+        const time =
+          typeof entry === 'string'
+            ? entry
+            : entry.time;
 
-          const time =
-            typeof entry === 'string'
-              ? entry
-              : entry.time;
+        const backendAvailable =
+          typeof entry === 'string'
+            ? true
+            : (entry.available !== false);
 
+        const isPast = isTimeInPast(date, time);
 
-          const backendAvailable =
-            typeof entry === 'string'
-              ? true
-              : (entry.available !== false);
+        const isDisabled = !backendAvailable || isPast;
 
+        const button = document.createElement('button');
 
-          const isPast =
-            isTimeInPast(date, time);
+        button.type = 'button';
 
+        button.className =
+          'time-button' +
+          (isDisabled ? ' disabled' : '');
 
-          const isDisabled =
-            !backendAvailable ||
-            isPast;
+        button.innerText = formatTime(time);
 
+        if (isDisabled) {
 
-          const button =
-            document.createElement(
-              'button'
-            );
+          button.disabled = true;
 
+        } else {
 
-          button.type =
-            'button';
+          button.addEventListener('click', function () {
 
+            selectedTime = time;
 
-          button.className =
-            'time-button' +
-            (isDisabled ? ' disabled' : '');
+            document
+              .querySelectorAll('.time-button')
+              .forEach(function (btn) {
 
+                btn.classList.remove('selected');
 
-          button.innerText = formatTime(time);
+              });
 
+            button.classList.add('selected');
 
-          if (isDisabled) {
-
-            button.disabled =
-              true;
-
-          } else {
-
-            button.addEventListener(
-              'click',
-              function() {
-
-                selectedTime =
-                  time;
-
-
-                document
-                  .querySelectorAll(
-                    '.time-button'
-                  )
-                  .forEach(
-                    function(btn) {
-
-                      btn.classList.remove(
-                        'selected'
-                      );
-
-                    }
-                  );
-
-
-                button.classList.add(
-                  'selected'
-                );
-
-              }
-            );
-
-          }
-
-
-          container.appendChild(
-            button
-          );
+          });
 
         }
-      );
 
+        container.appendChild(button);
+
+      });
 
     } catch (error) {
 
-      console.error(
-        'loadTimes ERROR:',
-        error
-      );
-
+      console.error('loadTimes ERROR:', error);
 
       container.innerHTML =
 
         '<div class="no-time">' +
           '讀取失敗：' +
-          escapeHtml(
-            error.message
-          ) +
+          escapeHtml(error.message) +
         '</div>';
 
     }
@@ -2079,20 +1531,21 @@
     }
 
     const text = String(value).trim();
-
     const match = text.match(/(\d{1,2}):(\d{2})/);
 
     if (match) {
+
       return (
         String(Number(match[1])).padStart(2, '0') +
         ':' +
         match[2]
       );
+
     }
 
     return text;
-  }
 
+  }
 
   function isTimeInPast(dateStr, timeStr) {
 
@@ -2100,238 +1553,148 @@
       return false;
     }
 
+    const now = new Date();
 
-    const now =
-      new Date();
-
-
-    const todayStr =
-      toDateStr(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-      );
-
+    const todayStr = toDateStr(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
 
     if (dateStr !== todayStr) {
       return false;
     }
 
-
-    const match =
-      String(timeStr).match(/(\d{1,2}):(\d{2})/);
+    const match = String(timeStr).match(/(\d{1,2}):(\d{2})/);
 
     if (!match) {
       return false;
     }
 
+    const slotHour = Number(match[1]);
+    const slotMinute = Number(match[2]);
 
-    const slotHour =
-      Number(match[1]);
-
-    const slotMinute =
-      Number(match[2]);
-
-
-    const slotDate =
-      new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        slotHour,
-        slotMinute
-      );
-
+    const slotDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      slotHour,
+      slotMinute
+    );
 
     return slotDate <= now;
 
   }
-
 
   /* ==================================================
      步驟一：確認預約
      - 先檢查基本欄位
      - 呼叫後端確認是否為會員
      - 會員 -> 直接建立預約
-     - 非會員 -> 顯示新客訂金說明，等待填寫後五碼
+     - 非會員 -> 顯示新客訂金說明
   ================================================== */
 
   async function submitReservation() {
 
-    const date =
-      selectedDate;
+    if (serviceDisabled) {
 
-
-    const name =
-      document
-        .getElementById('name')
-        .value
-        .trim();
-
-
-    const phone =
-      document
-        .getElementById('phone')
-        .value
-        .trim();
-
-
-    const serviceElement =
-      document.getElementById(
-        'service'
-      );
-
-
-    const service =
-      serviceElement.value;
-
-
-    const price =
-      serviceElement
-        .selectedOptions[0]
-        .dataset.price;
-
-
-    const button =
-      document.getElementById(
-        'submitButton'
-      );
-
-
-    const message =
-      document.getElementById(
-        'message'
-      );
-
-
-    if (
-      !liffReady ||
-      !lineUserId
-    ) {
-
-      alert(
-        'LINE 尚未連線，請從 LINE 官方帳號開啟預約。'
-      );
-
+      alert('目前線上預約暫停使用，請透過 LINE 官方帳號或電話與我們聯繫。');
       return;
 
     }
 
+    const date = selectedDate;
+
+    const name = document
+      .getElementById('name')
+      .value
+      .trim();
+
+    const phone = document
+      .getElementById('phone')
+      .value
+      .trim();
+
+    const serviceElement = document.getElementById('service');
+
+    const service = serviceElement.value;
+
+    const price = serviceElement
+      .selectedOptions[0]
+      .dataset.price;
+
+    const button = document.getElementById('submitButton');
+
+    const message = document.getElementById('message');
+
+    if (!liffReady || !lineUserId) {
+
+      alert('LINE 尚未連線，請從 LINE 官方帳號開啟預約。');
+      return;
+
+    }
 
     if (!date) {
 
-      alert(
-        '請選擇日期'
-      );
-
+      alert('請選擇日期');
       return;
 
     }
-
 
     if (!selectedTime) {
 
-      alert(
-        '請選擇時間'
-      );
-
+      alert('請選擇時間');
       return;
 
     }
-
 
     if (!name) {
 
-      alert(
-        '請輸入姓名'
-      );
-
+      alert('請輸入姓名');
       return;
 
     }
-
 
     if (!phone) {
 
-      alert(
-        '請輸入電話'
-      );
-
+      alert('請輸入電話');
       return;
 
     }
 
+    document.getElementById('depositPanel').style.display = 'none';
 
-    // 每次重新確認流程時，先隱藏訂金區塊
-    document
-      .getElementById('depositPanel')
-      .style.display =
-        'none';
+    message.innerHTML = '';
 
-
-    message.innerHTML =
-      '';
-
-
-    button.disabled =
-      true;
-
-
-    button.innerText =
-      '確認會員資料中...';
-
+    button.disabled = true;
+    button.innerText = '確認會員資料中...';
 
     const reservationData = {
 
-      date:
-        date,
+      date: date,
+      time: selectedTime,
+      service: service,
+      price: price,
+      name: name,
+      phone: phone,
 
-      time:
-        selectedTime,
-
-      service:
-        service,
-
-      price:
-        price,
-
-      name:
-        name,
-
-      phone:
-        phone,
-
-      // 不再傳未經驗證的 lineUserId，改傳 idToken，
-      // 後端會用這個向 LINE 官方換回「真正、無法偽造」的 userId
-      idToken:
-        lineIdToken
+      // 後端使用 idToken 向 LINE 官方驗證身分
+      idToken: lineIdToken
 
     };
 
-
     try {
 
-      const memberResult =
-        await callGAS(
-          'checkMember',
-          {
-            phone:
-              phone
-          }
-        );
+      const memberResult = await callGAS(
+        'checkMember',
+        { phone: phone }
+      );
 
+      if (!memberResult || !memberResult.success) {
 
-      if (
-        !memberResult ||
-        !memberResult.success
-      ) {
-
-        throw new Error(
-          '會員資料確認失敗，請稍後再試。'
-        );
+        throw new Error('會員資料確認失敗，請稍後再試。');
 
       }
-
 
       if (memberResult.isMember) {
 
@@ -2345,58 +1708,31 @@
       } else {
 
         // 新客，暫存資料並顯示訂金說明
-        pendingReservationData =
-          reservationData;
+        pendingReservationData = reservationData;
 
+        const depositPanel = document.getElementById('depositPanel');
 
-        const depositPanel =
-          document.getElementById(
-            'depositPanel'
-          );
-
-
-        depositPanel.style.display =
-          'block';
-
+        depositPanel.style.display = 'block';
 
         depositPanel.scrollIntoView({
-
-          behavior:
-            'smooth',
-
-          block:
-            'center'
-
+          behavior: 'smooth',
+          block: 'center'
         });
 
       }
 
-
     } catch (error) {
 
-      console.error(
-        'submitReservation ERROR:',
-        error
-      );
+      console.error('submitReservation ERROR:', error);
 
-
-      alert(
-        '系統發生錯誤：' +
-        error.message
-      );
+      alert('系統發生錯誤：' + error.message);
 
     }
 
-
-    button.disabled =
-      false;
-
-
-    button.innerText =
-      '確認預約';
+    button.disabled = false;
+    button.innerText = '確認預約';
 
   }
-
 
   /* ==================================================
      步驟二（僅新客）：確認訂金並送出預約
@@ -2406,65 +1742,44 @@
 
     if (!pendingReservationData) {
 
-      alert(
-        '請先填寫預約資訊並按下「確認預約」。'
-      );
-
+      alert('請先填寫預約資訊並按下「確認預約」。');
       return;
 
     }
 
+    const last5 = document
+      .getElementById('depositLast5')
+      .value
+      .trim();
 
-    const last5 =
-      document
-        .getElementById('depositLast5')
-        .value
-        .trim();
+    if (!/^\d{5}$/.test(last5)) {
 
-
-    if (
-      !/^\d{5}$/.test(last5)
-    ) {
-
-      alert(
-        '請輸入正確的匯款帳號後五碼（5 位數字）'
-      );
-
+      alert('請輸入正確的匯款帳號後五碼（5 位數字）');
       return;
 
     }
 
+    const button = document.getElementById('depositConfirmButton');
 
-    const button =
-      document.getElementById(
-        'depositConfirmButton'
+    button.disabled = true;
+    button.innerText = '處理中...';
+
+    try {
+
+      await doCreateReservation(
+        pendingReservationData,
+        true,
+        last5
       );
 
+    } finally {
 
-    button.disabled =
-      true;
+      button.disabled = false;
+      button.innerText = '確認訂金並完成預約';
 
-
-    button.innerText =
-      '處理中...';
-
-
-    await doCreateReservation(
-      pendingReservationData,
-      true,
-      last5
-    );
-
-
-    button.disabled =
-      false;
-
-
-    button.innerText =
-      '確認訂金並完成預約';
+    }
 
   }
-
 
   /* ==================================================
      實際呼叫後端建立預約
@@ -2474,39 +1789,23 @@
 
     try {
 
-      const payload =
-        Object.assign(
-          {},
-          data,
-          {
+      const payload = Object.assign(
+        {},
+        data,
+        {
+          isNewCustomer: isNewCustomer,
+          depositLast5: depositLast5
+        }
+      );
 
-            isNewCustomer:
-              isNewCustomer,
+      const result = await callGAS(
+        'createReservation',
+        payload
+      );
 
-            depositLast5:
-              depositLast5
+      if (result && result.success) {
 
-          }
-        );
-
-
-      const result =
-        await callGAS(
-          'createReservation',
-          payload
-        );
-
-
-      if (
-        result &&
-        result.success
-      ) {
-
-        // 用免費的 liff.sendMessages() 把確認訊息送進聊天室，
-        // 不會計入 Messaging API 的 Push 額度。
-        // 需要 LIFF App 的 Scope 有勾選 chat_message.write，
-        // 且必須是從 LINE 內的聊天室情境開啟才會成功，
-        // 失敗也不影響預約已經成立這件事，所以只記錄不擋流程。
+        // 只有 LINE 內的聊天室情境才嘗試傳送訊息
         if (
           result.notificationMessage &&
           liff.isInClient()
@@ -2514,9 +1813,9 @@
 
           try {
 
-            await liff.sendMessages(
-              [ result.notificationMessage ]
-            );
+            await liff.sendMessages([
+              result.notificationMessage
+            ]);
 
           } catch (sendError) {
 
@@ -2529,51 +1828,31 @@
 
         }
 
-
-        renderSuccessMessage(
-          result
-        );
-
+        renderSuccessMessage(result);
 
         resetForm();
-
 
       } else {
 
         alert(
-
-          result &&
-          result.message
-
+          result && result.message
             ? result.message
-
             : '預約失敗，請稍後再試。'
-
         );
-
 
         loadTimes();
 
       }
 
-
     } catch (error) {
 
-      console.error(
-        'createReservation ERROR:',
-        error
-      );
+      console.error('createReservation ERROR:', error);
 
-
-      alert(
-        '系統發生錯誤：' +
-        error.message
-      );
+      alert('系統發生錯誤：' + error.message);
 
     }
 
   }
-
 
   /* ==================================================
      顯示預約成功／待確認訊息
@@ -2581,15 +1860,9 @@
 
   function renderSuccessMessage(result) {
 
-    const message =
-      document.getElementById(
-        'message'
-      );
+    const message = document.getElementById('message');
 
-
-    const isPending =
-      result.status === '待確認';
-
+    const isPending = result.status === '待確認';
 
     message.innerHTML =
 
@@ -2609,25 +1882,13 @@
 
         '<div class="success-info">' +
 
-          successRow(
-            '日期',
-            result.date || ''
-          ) +
+          successRow('日期', result.date || '') +
 
-          successRow(
-            '時間',
-            formatTime(result.time)
-          ) +
+          successRow('時間', formatTime(result.time)) +
 
-          successRow(
-            '服務',
-            result.service || ''
-          ) +
+          successRow('服務', result.service || '') +
 
-          successRow(
-            '價格',
-            '$' + (result.price || '')
-          ) +
+          successRow('價格', '$' + (result.price || '')) +
 
           (
             isPending
@@ -2652,35 +1913,40 @@
 
       '</div>';
 
+    document.getElementById('depositPanel').style.display = 'none';
 
-    document
-      .getElementById('depositPanel')
-      .style.display =
-        'none';
+    document.getElementById('depositLast5').value = '';
 
-
-    document
-      .getElementById('depositLast5')
-      .value =
-        '';
-
-
-    pendingReservationData =
-      null;
-
+    pendingReservationData = null;
 
     message.scrollIntoView({
-
-      behavior:
-        'smooth',
-
-      block:
-        'center'
-
+      behavior: 'smooth',
+      block: 'center'
     });
 
   }
 
+  /* ==================================================
+     服務暫停畫面
+  ================================================== */
+
+  function showServiceDisabledOverlay() {
+
+    const card = document.querySelector('.booking-card');
+
+    card.innerHTML =
+
+      '<div class="success">' +
+
+        '<div class="success-title">🛠 服務暫停中</div>' +
+
+        '<div class="success-notice">' +
+          '目前線上預約暫停使用，請直接透過 LINE 官方帳號或電話與我們聯繫，造成不便敬請見諒。' +
+        '</div>' +
+
+      '</div>';
+
+  }
 
   /* ==================================================
      重置表單
@@ -2688,51 +1954,24 @@
 
   function resetForm() {
 
-    selectedTime =
-      '';
+    selectedTime = '';
+    selectedDate = '';
+    calendarViewDate = new Date();
 
-
-    selectedDate =
-      '';
-
-
-    calendarViewDate =
-      new Date();
-
-
-    // 剛完成的預約可能讓當天額滿，強制重新查詢這個月
-    monthAvailabilityKey =
-      '';
-
+    // 完成預約後，強制重新查詢當月可預約日期
+    monthAvailabilityKey = '';
 
     renderCalendar();
 
-
     updateSelectedDateLabel();
 
+    document.getElementById('times').innerHTML =
+      '<div class="no-time">請先選擇日期</div>';
 
-    document
-      .getElementById('times')
-      .innerHTML =
-
-        '<div class="no-time">' +
-          '請先選擇日期' +
-        '</div>';
-
-
-    document
-      .getElementById('name')
-      .value =
-      '';
-
-
-    document
-      .getElementById('phone')
-      .value =
-      '';
+    document.getElementById('name').value = '';
+    document.getElementById('phone').value = '';
 
   }
-
 
   /* ==================================================
      成功資料列
@@ -2741,6 +1980,7 @@
   function successRow(label, value) {
 
     return (
+
       '<div class="success-row">' +
 
         '<div class="success-label">' +
@@ -2752,10 +1992,10 @@
         '</div>' +
 
       '</div>'
+
     );
 
   }
-
 
   /* ==================================================
      HTML Escape
@@ -2765,30 +2005,15 @@
 
     return String(value)
 
-      .replace(
-        /&/g,
-        '&amp;'
-      )
+      .replace(/&/g, '&amp;')
 
-      .replace(
-        /</g,
-        '&lt;'
-      )
+      .replace(/</g, '&lt;')
 
-      .replace(
-        />/g,
-        '&gt;'
-      )
+      .replace(/>/g, '&gt;')
 
-      .replace(
-        /"/g,
-        '&quot;'
-      )
+      .replace(/"/g, '&quot;')
 
-      .replace(
-        /'/g,
-        '&#039;'
-      );
+      .replace(/'/g, '&#039;');
 
   }
 
