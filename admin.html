@@ -556,6 +556,104 @@ a {
   outline-offset: 3px;
 }
 
+/* 已完成、系統備註、儲值金、對話框 */
+.t-已完成 {
+  color: #4F6F9A;
+}
+
+.sys {
+  margin-top: 8px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--pill);
+  color: var(--mute);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.sys b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+}
+
+.bal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.bal .tag {
+  color: var(--ink);
+  font-size: 13px;
+  padding: 3px 12px;
+}
+
+.adj {
+  margin-top: 10px;
+}
+
+.adj input[type=number] {
+  width: 96px;
+}
+
+.chip.part {
+  border-style: dashed;
+}
+
+.chip.rm {
+  padding: 9px 11px;
+  color: var(--mute);
+  margin-left: -6px;
+}
+
+.ov {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(81, 67, 60, .38);
+}
+
+.sheet {
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  overflow: auto;
+  margin: 0;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+}
+
+.opt {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 9px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.opt input[type=radio] {
+  margin-top: 5px;
+}
+
+.opt.off {
+  opacity: .45;
+}
+
+#stamp {
+  font-size: 12px;
+}
+
 /* 手機版 */
 @media (max-width: 380px) {
   main {
@@ -635,6 +733,9 @@ a {
   <div class="top">
     <div class="logo">ITSNONO<small>預約系統管理</small></div>
     <div class="row">
+      <span class="tag t-待確認" id="rolebadge" hidden>維護模式</span>
+      <span class="mute" id="stamp"></span>
+      <button class="b g sm" id="rf">↻ 更新</button>
       <button class="b g sm" id="chg">修改密碼</button>
       <button class="b g sm" id="out">登出</button>
     </div>
@@ -661,6 +762,7 @@ a {
         <option value="all">全部狀態</option>
         <option>待確認</option>
         <option>已預約</option>
+        <option>已完成</option>
         <option>已取消</option>
       </select>
     </div>
@@ -702,6 +804,7 @@ a {
 
     <div class="card" id="hed" hidden>
       <b id="hcount"></b>
+      <p class="mute" style="margin:4px 0 0">點時段切換選取。清單裡沒有的時段，可在下方輸入後加入。</p>
       <div class="chips" id="hchips"></div>
       <div class="row">
         <input type="time" id="hT">
@@ -709,6 +812,8 @@ a {
       </div>
       <div class="row" style="margin-top:16px">
         <button class="b" id="hApply">套用到所選日期</button>
+        <button class="b g" id="hPlus" hidden>加到這些日期</button>
+        <button class="b g d" id="hMinus" hidden>從這些日期移除</button>
         <button class="b g" id="hOff">設為休息</button>
       </div>
     </div>
@@ -732,6 +837,18 @@ a {
 
   <div class="bar" id="bar" hidden>
     <button class="b" id="save"></button>
+  </div>
+</div>
+
+<div class="ov" id="dlg" hidden>
+  <div class="card sheet">
+    <b id="dlg-t"></b>
+    <p class="mute" id="dlg-s" style="margin:4px 0 14px"></p>
+    <div id="dlg-opts"></div>
+    <div class="row" style="margin-top:6px">
+      <button class="b" id="dlg-ok">確認完成</button>
+      <button class="b g" id="dlg-x">取消</button>
+    </div>
   </div>
 </div>
 
@@ -785,9 +902,9 @@ let svc = [], dirty = new Map(), tab = "bookings", tt;
 
 const TITLES = {
   bookings:["預約系統","所有預約都在這裡，可切換日、週、月檢視。"],
-  hours:["營業時間","點選日期，挑好時段，一次套用到多天。"],
+  hours:["營業時間","點選日期，新增、刪除或調整時段，一次套用到多天。"],
   services:["服務項目","調整價格與時長；不再提供的服務可以停用或刪除。"],
-  members:["會員資料","客戶的聯絡方式，以及你自己的備註。"]
+  members:["會員資料","客戶的聯絡方式、儲值金／堂數，以及你自己的備註。"]
 };
 
 function toast(m) {
@@ -985,19 +1102,31 @@ function bkByDate() {
   return m;
 }
 
+const num = v => Number(String(v ?? "").replace(/[^\d.-]/g,"")) || 0;
+const phoneKey = p => {
+  const s = String(p || "").replace(/[-\s]/g,"").replace(/^\+?886/,"0");
+  return /^9\d{8}$/.test(s) ? "0"+s : s;
+};
+const sysBox = t => t ? `<div class="sys"><b>系統紀錄</b>${esc(t)}</div>` : "";
+
 function bkCard(b) {
   const st=b["狀態"], id=esc(b["預約編號"]);
+  const btn=(act,label,cls="")=>`<button class="b sm ${cls}" data-act="${act}" data-id="${id}">${label}</button>`;
+  const acts = st==="待確認" ? btn("ok","確認")+btn("no","取消","g d")
+    : st==="已預約" ? btn("done","完成")+btn("no","取消","g d")
+    : st==="已完成" ? btn("undo","撤銷完成","g")
+    : btn("back","恢復預約","g");
+  const used = b["扣抵"] ? "　已扣 "+esc(b["扣抵"]) : "";
+
   return `<div class="bk ${st==="已取消"?"x":""}">
     <div class="row sp">
       <b>${esc(b["時間"])}　${esc(b["服務"])}</b>
       <span class="tag t-${esc(st)}">${esc(st)}</span>
     </div>
     <div>${esc(b["姓名"])}・<a href="tel:${esc(fixPhone(b["電話"]))}">${esc(fixPhone(b["電話"]))}</a></div>
-    <div class="mute">$${esc(b["價格"])}${b["訂金後五碼"]?"　後五碼 "+esc(b["訂金後五碼"]):""}${b["備註"]?"　備註："+esc(b["備註"]):""}</div>
-    <div class="row" style="margin-top:10px">
-      <button class="b sm" data-act="ok" data-id="${id}" ${st==="已預約"?"disabled":""}>確認</button>
-      <button class="b sm d" data-act="no" data-id="${id}" ${st==="已取消"?"disabled":""}>取消</button>
-    </div>
+    <div class="mute">$${esc(b["價格"])}${b["訂金後五碼"]?"　後五碼 "+esc(b["訂金後五碼"]):""}${used}${b["備註"]?"　備註："+esc(b["備註"]):""}</div>
+    ${sysBox((b["系統備註"]||"").trim())}
+    <div class="row" style="margin-top:10px">${acts}</div>
   </div>`;
 }
 
@@ -1080,35 +1209,113 @@ $("bview").onclick=async e=>{
   const b=e.target.closest("button[data-act]");
   if (!b) return;
 
-  const ok=b.dataset.act==="ok",id=b.dataset.id;
+  const act=b.dataset.act, id=b.dataset.id;
   const bk=S.bookings.find(x=>String(x["預約編號"])===id);
+  if (!bk) return toast("找不到這筆預約，請按右上角更新");
 
-  if (!ok && !confirm(`確定取消 ${bk["姓名"]} ${bk["日期"]} ${bk["時間"]} 的預約？`)) return;
+  if (act==="done") return openDone(bk);
+
+  const MAP={
+    ok:["已預約","已確認"],
+    no:["已取消","已取消，這個時段已開放給其他人預約"],
+    undo:["已預約","已撤銷完成"],
+    back:["待確認","已恢復為待確認"]
+  };
+  const [status,msg]=MAP[act];
+
+  if (act==="no" && !confirm(`確定取消 ${bk["姓名"]} ${bk["日期"]} ${bk["時間"]} 的預約？\n取消後這個時段會開放給其他人預約。`)) return;
+  if (act==="undo" && !confirm(`撤銷「完成」？${bk["扣抵"]?"\n已扣的儲值金／堂數會自動退回。":""}`)) return;
 
   b.disabled=true;
   try {
-    const status=ok?"已預約":"已取消";
-    await api("setStatus",{id,status});
-    bk["狀態"]=status;
-    renderBookings();
-    toast(ok?"已確認":"已取消");
+    const r=await api("setStatus",{id,status});
+    await refresh();
+    toast(r.notified===false?`${msg}（LINE 通知未送出：${r.notifyError}）`:msg);
   } catch(err) {
     toast(err.message);
     b.disabled=false;
   }
 };
 
+/* 完成預約：選擇是否扣儲值金／堂數 */
+const DEPOSIT = 500; // 與預約頁的首次訂金金額一致
+let DLG = null;
+
+function openDone(bk) {
+  const m=S.members.find(x=>phoneKey(x["電話"])===phoneKey(bk["電話"]));
+  const wallet=m?num(m["儲值金餘額"]):0, sess=m?num(m["剩餘堂數"]):0;
+  const price=num(bk["價格"]);
+  const dep=bk["訂金後五碼"]?DEPOSIT:0;
+  const amt=Math.max(price-dep,0);
+  const pre=sess>0?"sessions":(wallet>0&&amt>0?"wallet":"none");
+
+  DLG={id:bk["預約編號"]};
+  $("dlg-t").textContent=`${bk["姓名"]}｜${md(bk["日期"])} ${bk["時間"]}`;
+  $("dlg-s").textContent=`${bk["服務"]}　價格 $${price}${dep?`（已付訂金 $${dep}，預設扣款已折抵）`:""}${m?"":"　（找不到會員資料，無法扣抵）"}`;
+
+  $("dlg-opts").innerHTML=`
+    <label class="opt"><input type="radio" name="dm" value="none" ${pre==="none"?"checked":""}>
+      <span>只標記完成，不扣儲值金／堂數</span></label>
+    <label class="opt ${sess>0?"":"off"}"><input type="radio" name="dm" value="sessions" ${sess>0?"":"disabled"} ${pre==="sessions"?"checked":""}>
+      <span>扣 1 堂<br><span class="mute">剩餘 ${sess} 堂 → ${Math.max(sess-1,0)} 堂</span></span></label>
+    <label class="opt ${wallet>0?"":"off"}"><input type="radio" name="dm" value="wallet" ${wallet>0?"":"disabled"} ${pre==="wallet"?"checked":""}>
+      <span>扣儲值金 $<input type="number" inputmode="numeric" id="dlg-amt" value="${amt}" style="width:100px"><br><span class="mute">餘額 $${wallet}</span></span></label>`;
+
+  $("dlg-amt").oninput=()=>{
+    const r=document.querySelector('#dlg input[value="wallet"]');
+    if (r && !r.disabled) r.checked=true;
+  };
+  $("dlg").hidden=false;
+}
+
+$("dlg-x").onclick=()=>{
+  $("dlg").hidden=true;
+  DLG=null;
+};
+
+$("dlg").onclick=e=>{
+  if (e.target===$("dlg")) $("dlg-x").onclick();
+};
+
+$("dlg-ok").onclick=async()=>{
+  if (!DLG) return;
+
+  const mode=(document.querySelector("#dlg input[name=dm]:checked")||{}).value||"none";
+  const amount=mode==="wallet"?Number($("dlg-amt").value):0;
+  const bt=$("dlg-ok");
+  bt.disabled=true;
+
+  try {
+    const r=await api("completeBooking",{id:DLG.id,mode,amount});
+    $("dlg").hidden=true;
+    DLG=null;
+    await refresh();
+    toast(r.notified===false
+      ? `已完成（LINE 通知未送出：${r.notifyError}）`
+      : mode==="none" ? "已標記完成" : "已完成並扣抵，已通知客人");
+  } catch(err) {
+    toast(err.message);
+  }
+
+  bt.disabled=false;
+};
+
 /* 營業時間 */
 const H={ms:mStart(today()),sel:new Set(),pick:new Set(),extra:new Set()};
 
-function commonTimes() {
-  const c={};
-  S.hours.forEach(h=>{
-    if (h.slots) h.slots.split(",").forEach(t=>c[t]=(c[t]||0)+1);
-  });
-  const top=Object.keys(c).sort((a,b)=>c[b]-c[a]).slice(0,8);
-  return [...new Set([...top,...H.extra,...H.pick])].sort();
+const daySlots=ds=>{
+  const h=S.hours.find(x=>x.date===ds);
+  return h&&h.slots?h.slots.split(","):[];
+};
+
+function slotsInUse() {
+  const s=new Set();
+  S.hours.forEach(h=>h.slots&&h.slots.split(",").forEach(t=>s.add(t)));
+  return s;
 }
+
+// 清單 = 所有日期用過的時段 + 剛新增還沒套用的時段，才不會有時段「藏起來」刪不掉
+const chipTimes=()=>[...new Set([...slotsInUse(),...H.extra,...H.pick])].sort();
 
 function renderHours() {
   const hm={};
@@ -1127,10 +1334,22 @@ function renderHours() {
     g+=`<button class="c ${ds===t?"today":""} ${H.sel.has(ds)?"sel":""} ${dirty.has(ds)?"dy":""}" data-d="${ds}" ${ds<t?"disabled":""}><b>${d}</b><i>${n}</i></button>`;
   }
 
+  const days=[...H.sel];
+  const inUse=slotsInUse();
+  const cnt={};
+  days.forEach(ds=>daySlots(ds).forEach(x=>cnt[x]=(cnt[x]||0)+1));
+
   $("hgrid").innerHTML=`<div class="grid">${g}</div>`;
-  $("hed").hidden=!H.sel.size;
-  $("hcount").textContent=`已選 ${H.sel.size} 天，請選擇時段`;
-  $("hchips").innerHTML=commonTimes().map(x=>`<button class="chip ${H.pick.has(x)?"on":""}" data-t="${x}">${x}</button>`).join("");
+  $("hed").hidden=!days.length;
+  $("hcount").textContent=`已選 ${days.length} 天${days.length>1?"（虛線＝只有部分日期有這個時段）":""}`;
+  $("hApply").textContent=days.length>1?"覆蓋為所選時段":"儲存這天的時段";
+  $("hPlus").hidden=$("hMinus").hidden=days.length<2;
+
+  $("hchips").innerHTML=chipTimes().map(x=>{
+    const part=days.length>1&&cnt[x]>0&&cnt[x]<days.length;
+    const rm=inUse.has(x)?"":`<button class="chip rm" data-rm="${x}" aria-label="從清單移除 ${x}">×</button>`;
+    return `<button class="chip ${H.pick.has(x)?"on":""} ${part?"part":""}" data-t="${x}">${x}</button>${rm}`;
+  }).join("");
 }
 
 $("hp").onclick=()=>{
@@ -1150,10 +1369,8 @@ $("hgrid").onclick=e=>{
   if (H.sel.has(ds)) H.sel.delete(ds);
   else H.sel.add(ds);
 
-  if (H.sel.size===1) {
-    const h=S.hours.find(x=>x.date===[...H.sel][0]);
-    H.pick=new Set(h&&h.slots?h.slots.split(","):[]);
-  }
+  // 選第一天時，把那天的時段帶進來（可再選更多天，把這個時段複製過去）
+  if (H.sel.size===1) H.pick=new Set(daySlots([...H.sel][0]));
   renderHours();
 };
 
@@ -1175,6 +1392,13 @@ $("hsel").onclick=e=>{
 };
 
 $("hchips").onclick=e=>{
+  const r=e.target.closest("button[data-rm]");
+  if (r) {
+    H.extra.delete(r.dataset.rm);
+    H.pick.delete(r.dataset.rm);
+    return renderHours();
+  }
+
   const b=e.target.closest("button[data-t]");
   if (!b) return;
   const t=b.dataset.t;
@@ -1188,27 +1412,60 @@ $("hAdd").onclick=()=>{
   if (!v) return toast("請先選一個時間");
   H.extra.add(v);
   H.pick.add(v);
+  $("hT").value="";
   renderHours();
 };
 
-function applyHours(list) {
-  const s=list.sort().join(","),n=H.sel.size;
+/**
+ * mode: set＝覆蓋成 list；add＝把 list 加進每一天；del＝從每一天移除 list
+ * 只改本機暫存，按下方「儲存營業時間」才會寫進試算表。
+ */
+function opHours(mode,list) {
+  const days=[...H.sel];
+  if (!days.length) return;
 
-  H.sel.forEach(ds=>{
-    dirty.set(ds,{date:ds,slots:s,note:null});
-    const ex=S.hours.find(h=>h.date===ds);
+  const plan=days.map(ds=>{
+    const cur=daySlots(ds);
+    const next=[...new Set(
+      mode==="set"?list:mode==="add"?[...cur,...list]:cur.filter(x=>!list.includes(x))
+    )].sort();
+    return {ds,cur,next,removed:cur.filter(x=>!next.includes(x))};
+  }).filter(p=>p.cur.join()!==p.next.join());
+
+  if (!plan.length) return toast("沒有任何變動");
+
+  // 要移除的時段如果已經有人預約，先提醒
+  const hit=[];
+  plan.forEach(p=>S.bookings.forEach(b=>{
+    if (b["日期"]===p.ds&&p.removed.includes(b["時間"])&&["待確認","已預約"].includes(b["狀態"])) {
+      hit.push(`${md(p.ds)} ${b["時間"]} ${b["姓名"]}`);
+    }
+  }));
+
+  if (mode==="del"||hit.length) {
+    const msg=(mode==="del"?`從 ${plan.length} 天移除 ${list.join("、")}？`:"這些時段會被移除：")
+      +(hit.length?`\n\n其中這些時段已有預約（預約不會被取消）：\n${hit.join("\n")}`:"");
+    if (!confirm(msg)) return;
+  }
+
+  plan.forEach(p=>{
+    const s=p.next.join(",");
+    dirty.set(p.ds,{date:p.ds,slots:s,note:null});
+    const ex=S.hours.find(h=>h.date===p.ds);
     if (ex) ex.slots=s;
-    else S.hours.push({date:ds,slots:s,note:""});
+    else S.hours.push({date:p.ds,slots:s,note:""});
   });
 
   H.sel.clear();
   renderHours();
   updBar();
-  toast(`已套用到 ${n} 天，記得按下方儲存`);
+  toast(`已套用到 ${plan.length} 天，記得按下方儲存`);
 }
 
-$("hApply").onclick=()=>H.pick.size?applyHours([...H.pick]):toast("請先選時段，或按「設為休息」");
-$("hOff").onclick=()=>applyHours([]);
+$("hApply").onclick=()=>H.pick.size||H.sel.size===1?opHours("set",[...H.pick]):toast("請先選時段，或按「設為休息」");
+$("hPlus").onclick=()=>H.pick.size?opHours("add",[...H.pick]):toast("請先選要加入的時段");
+$("hMinus").onclick=()=>H.pick.size?opHours("del",[...H.pick]):toast("請先選要移除的時段");
+$("hOff").onclick=()=>opHours("set",[]);
 
 /* 服務項目 */
 let SF="all";
@@ -1286,13 +1543,15 @@ $("sAdd").onclick=()=>{
   window.scrollTo(0,document.body.scrollHeight);
 };
 
-/* 會員備註 */
+/* 會員：儲值金／堂數、自己的備註、系統紀錄 */
 function renderMembers() {
   const q=$("mq").value.trim().toLowerCase();
   const list=S.members.filter(m=>!q||(m["姓名"]+m["電話"]).toLowerCase().includes(q));
 
   $("mlist").innerHTML=list.length?list.map(m=>{
-    const n=S.bookings.filter(b=>b["電話"]===m["電話"]&&b["狀態"]!=="已取消").length;
+    const key=phoneKey(m["電話"]);
+    const n=S.bookings.filter(b=>phoneKey(b["電話"])===key&&b["狀態"]!=="已取消").length;
+    const w=num(m["儲值金餘額"]), s=num(m["剩餘堂數"]);
 
     return `<div class="card">
       <div class="row sp">
@@ -1303,13 +1562,29 @@ function renderMembers() {
         <a href="tel:${esc(fixPhone(m["電話"]))}">${esc(fixPhone(m["電話"]))}</a>
        　首次 ${esc(m["首次預約日期"])}
       </div>
-      <textarea rows="2" data-r="${m._row}" placeholder="寫下備註，例如偏好、提醒事項…">${esc(m["備註"])}</textarea>
+      <div class="bal">
+        <span class="tag">儲值金 $${w}</span>
+        <span class="tag">剩餘 ${s} 堂</span>
+      </div>
+      <div class="row adj">
+        <select data-adj-type>
+          <option value="wallet">儲值金</option>
+          <option value="sessions">堂數</option>
+        </select>
+        <input type="number" inputmode="numeric" data-adj-val placeholder="數量">
+        <input class="w" data-adj-why placeholder="原因（選填）">
+        <button class="b sm" data-adj="1">增加</button>
+        <button class="b g sm d" data-adj="-1">扣除</button>
+      </div>
+      <textarea rows="2" data-r="${m._row}" placeholder="我的備註，例如偏好、提醒事項…">${esc(m["備註"])}</textarea>
+      ${sysBox((m["系統備註"]||"").trim())}
     </div>`;
   }).join(""):'<p class="mute">沒有符合的會員。</p>';
 }
 
 $("mq").oninput=renderMembers;
 
+// 自己寫的備註
 $("mlist").onchange=async e=>{
   const t=e.target.closest("textarea[data-r]");
   if (!t) return;
@@ -1323,6 +1598,36 @@ $("mlist").onchange=async e=>{
     toast("備註已儲存");
   } catch(err) {
     toast(err.message);
+  }
+};
+
+// 增加／扣除儲值金或堂數
+$("mlist").onclick=async e=>{
+  const b=e.target.closest("button[data-adj]");
+  if (!b) return;
+
+  const card=b.closest(".card");
+  const m=S.members.find(x=>String(x._row)===card.querySelector("textarea[data-r]").dataset.r);
+  const type=card.querySelector("[data-adj-type]").value;
+  const valEl=card.querySelector("[data-adj-val]");
+  const val=Number(valEl.value);
+  const reason=card.querySelector("[data-adj-why]").value.trim();
+  const label=type==="wallet"?"儲值金 $":"堂數 ";
+
+  if (!(val>0)||Math.round(val)!==val) return toast("請輸入大於 0 的整數");
+
+  const delta=val*Number(b.dataset.adj);
+  if (delta<0&&!confirm(`確定從 ${m["姓名"]} 扣除 ${label}${val}？`)) return;
+
+  b.disabled=true;
+  try {
+    await api("adjustMember",{row:m._row,name:m["姓名"],phone:m["電話"],type,delta,reason});
+    valEl.value=""; // 清空後，自動更新才會重畫這張卡片
+    await refresh();
+    toast(delta>0?"已增加":"已扣除");
+  } catch(err) {
+    toast(err.message);
+    b.disabled=false;
   }
 };
 
@@ -1370,13 +1675,75 @@ $("save").onclick=async()=>{
   updBar();
 };
 
+function applyRole() {
+  const dev=S.role==="dev";
+  $("rolebadge").hidden=!dev;
+  $("chg").hidden=dev; // 維護帳號不能改客戶密碼
+}
+
 function renderAll() {
+  applyRole();
   renderBookings();
   renderHours();
   renderServices();
   renderMembers();
   updBar();
 }
+
+/* ---------- 即時更新（不用重新登入） ---------- */
+
+// 使用者正在輸入時，不重畫該區，避免打到一半的字被洗掉
+function editingNow() {
+  const a=document.activeElement;
+  if (a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest("#p-members,#p-services")) return true;
+  return [...document.querySelectorAll("#mlist [data-adj-val],#mlist [data-adj-why]")].some(i=>i.value);
+}
+
+async function doRefresh(manual) {
+  if (!session||$("app").hidden) return;
+
+  try {
+    const j=await api("getAll");
+    const svcDirty=svcNorm(svc)!==svcNorm(S.services); // 服務項目有沒有未儲存的修改
+
+    S=j;
+
+    // 營業時間尚未儲存的修改，疊回最新資料上
+    dirty.forEach((v,ds)=>{
+      const ex=S.hours.find(h=>h.date===ds);
+      if (ex) ex.slots=v.slots;
+      else S.hours.push({date:ds,slots:v.slots,note:""});
+    });
+
+    if (!svcDirty) svc=S.services.map(s=>({...s}));
+
+    applyRole();
+    renderBookings();
+    renderHours();
+    if (!svcDirty&&!editingNow()) renderServices();
+    if (!editingNow()) renderMembers();
+    updBar();
+
+    $("stamp").textContent="更新 "+new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit",hour12:false});
+    if (manual) toast("已更新");
+  } catch(e) {
+    if (manual) toast(e.message);
+  }
+}
+
+// 請求排隊執行，避免定時更新和操作後更新互相覆蓋
+let rq=Promise.resolve();
+function refresh(manual) {
+  rq=rq.then(()=>doRefresh(manual));
+  return rq;
+}
+
+$("rf").onclick=()=>refresh(true);
+
+// 每 30 秒自動更新（頁面在前景才更新）；切回頁面時立刻更新一次
+setInterval(()=>{ if (!document.hidden) refresh(); },30000);
+document.addEventListener("visibilitychange",()=>{ if (!document.hidden) refresh(); });
+window.addEventListener("focus",()=>refresh());
 </script>
 </body>
 </html>
