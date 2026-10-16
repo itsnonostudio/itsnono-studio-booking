@@ -804,7 +804,7 @@ a {
 
     <div class="card" id="hed" hidden>
       <b id="hcount"></b>
-      <p class="mute" style="margin:4px 0 0">點時段切換選取。清單裡沒有的時段，可在下方輸入後加入。</p>
+      <p class="mute" style="margin:4px 0 0">點時段切換選取；時段旁的 × 會從所選日期刪除該時段。清單裡沒有的時段，可在下方輸入後加入。</p>
       <div class="chips" id="hchips"></div>
       <div class="row">
         <input type="time" id="hT">
@@ -1347,7 +1347,7 @@ function renderHours() {
 
   $("hchips").innerHTML=chipTimes().map(x=>{
     const part=days.length>1&&cnt[x]>0&&cnt[x]<days.length;
-    const rm=inUse.has(x)?"":`<button class="chip rm" data-rm="${x}" aria-label="從清單移除 ${x}">×</button>`;
+    const rm=`<button class="chip rm" data-rm="${x}" aria-label="刪除時段 ${x}">×</button>`;
     return `<button class="chip ${H.pick.has(x)?"on":""} ${part?"part":""}" data-t="${x}">${x}</button>${rm}`;
   }).join("");
 }
@@ -1394,8 +1394,16 @@ $("hsel").onclick=e=>{
 $("hchips").onclick=e=>{
   const r=e.target.closest("button[data-rm]");
   if (r) {
-    H.extra.delete(r.dataset.rm);
-    H.pick.delete(r.dataset.rm);
+    const t=r.dataset.rm;
+    // 所選日期有這個時段 → 從這些日期刪除（會先確認）
+    if ([...H.sel].some(ds=>daySlots(ds).includes(t))) {
+      H.pick.delete(t);
+      return opHours("del",[t]);
+    }
+    // 否則只是從清單拿掉（新加入但還沒套用，或所選日期本來就沒有）
+    H.extra.delete(t);
+    H.pick.delete(t);
+    if (slotsInUse().has(t)) toast("所選日期沒有這個時段，要刪除請先選有這個時段的日期");
     return renderHours();
   }
 
