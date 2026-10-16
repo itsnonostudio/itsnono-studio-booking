@@ -759,14 +759,9 @@
         選擇服務
       </label>
 
-      <select id="service">
+      <select id="service" disabled>
 
-        <option
-          value="三段深層淨膚課程"
-          data-price="2500"
-        >
-          三段深層淨膚課程｜$2,500
-        </option>
+        <option value="">服務項目讀取中...</option>
 
       </select>
 
@@ -959,13 +954,89 @@
      初始化
   ================================================== */
 
-  window.addEventListener('load', function () {
+  window.addEventListener('load', async function () {
 
-    renderCalendar();
     initLIFF();
     checkServiceStatus();
 
+    // 先從「服務項目」工作表取得服務清單，再畫月曆（月曆要依服務時長計算可約日期）
+    await loadServices();
+    renderCalendar();
+
   });
+
+  // 服務下拉選單：完全依後台「服務項目」工作表顯示（只列出狀態為啟用的項目）
+  async function loadServices() {
+
+    const select = document.getElementById('service');
+
+    try {
+
+      const result = await callGAS('getServices', {});
+
+      if (!result || !result.success) {
+        throw new Error('讀取服務項目失敗');
+      }
+
+      const list = result.list || Object.keys(result.services || {}).map(function (name) {
+        return { name: name, price: result.services[name].price };
+      });
+
+      select.innerHTML = '';
+
+      if (list.length === 0) {
+
+        select.innerHTML = '<option value="">目前沒有可預約的服務</option>';
+        select.disabled = true;
+        return false;
+
+      }
+
+      list.forEach(function (s) {
+
+        const option = document.createElement('option');
+
+        option.value = s.name;
+        option.dataset.price = s.price;
+        option.textContent = s.name + '｜$' + Number(s.price).toLocaleString('en-US');
+
+        select.appendChild(option);
+
+      });
+
+      if (result.defaultName) {
+        select.value = result.defaultName;
+      }
+
+      select.disabled = false;
+      return true;
+
+    } catch (error) {
+
+      console.error('loadServices ERROR:', error);
+
+      select.innerHTML = '<option value="">服務項目讀取失敗，請重新整理</option>';
+      select.disabled = true;
+      return false;
+
+    }
+
+  }
+
+  function getSelectedService() {
+
+    const el = document.getElementById('service');
+
+    return el && el.value ? el.value : '';
+
+  }
+
+  // 月曆快取的 key 要包含服務：不同服務的時長不同，可預約日期也會不同
+  function availabilityKey(year, month) {
+
+    return toYearMonthStr(year, month) + '|' + getSelectedService();
+
+  }
 
   async function checkServiceStatus() {
 
@@ -1002,6 +1073,36 @@
     .getElementById('depositConfirmButton')
     .addEventListener('click', confirmDepositAndSubmit);
 
+  // 換服務：時長不同，已選的日期／時間都要重選，月曆也要重新計算
+  document
+    .getElementById('service')
+    .addEventListener('change', function () {
+
+      selectedDate = '';
+      selectedTime = '';
+      monthAvailabilityKey = '';
+
+      updateSelectedDateLabel();
+
+      document.getElementById('times').innerHTML =
+        '<div class="no-time">請先選擇日期</div>';
+
+      renderCalendar();
+
+    });
+
+  // 切回頁面時重新抓月曆，後台取消的時段才會即時釋放出來
+  document.addEventListener('visibilitychange', function () {
+
+    if (!document.hidden && getSelectedService()) {
+
+      monthAvailabilityKey = '';
+      renderCalendar();
+
+    }
+
+  });
+
   /* ==================================================
      月曆
   ================================================== */
@@ -1036,7 +1137,7 @@
 
   async function ensureMonthAvailability(year, month) {
 
-    const key = toYearMonthStr(year, month);
+    const key = availabilityKey(year, month);
 
     if (key === monthAvailabilityKey) {
       return;
@@ -1046,7 +1147,7 @@
 
       const result = await callGAS(
         'getAvailableDatesInMonth',
-        { yearMonth: key }
+        { yearMonth: toYearMonthStr(year, month), service: getSelectedService() }
       );
 
       if (result && result.success) {
@@ -1081,7 +1182,7 @@
     const year = calendarViewDate.getFullYear();
     const month = calendarViewDate.getMonth();
 
-    if (toYearMonthStr(year, month) !== monthAvailabilityKey) {
+    if (availabilityKey(year, month) !== monthAvailabilityKey) {
 
       container.innerHTML =
 
@@ -1429,7 +1530,7 @@
 
       const result = await callGAS(
         'getAvailableTimes',
-        { date: date }
+        { date: date, service: getSelectedService() }
       );
 
       if (!result || !result.success) {
@@ -1619,9 +1720,9 @@
 
     const service = serviceElement.value;
 
-    const price = serviceElement
-      .selectedOptions[0]
-      .dataset.price;
+    const price = serviceElement.selectedOptions[0]
+      ? serviceElement.selectedOptions[0].dataset.price
+      : '';
 
     const button = document.getElementById('submitButton');
 
@@ -1630,6 +1731,13 @@
     if (!liffReady || !lineUserId) {
 
       alert('LINE 尚未連線，請從 LINE 官方帳號開啟預約。');
+      return;
+
+    }
+
+    if (!service) {
+
+      alert('請選擇服務項目');
       return;
 
     }
